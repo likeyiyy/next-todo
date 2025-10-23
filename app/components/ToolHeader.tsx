@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
 
 interface ToolHeaderProps {
   toolName: string;
@@ -8,6 +9,8 @@ interface ToolHeaderProps {
 }
 
 export default function ToolHeader({ toolName, toolIcon }: ToolHeaderProps) {
+  const { data: session, status } = useSession();
+
   return (
     <div className="bg-green-600 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,10 +40,42 @@ export default function ToolHeader({ toolName, toolIcon }: ToolHeaderProps) {
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-4">
             <span className="text-sm text-green-100">
               {toolIcon} {toolName}
             </span>
+            {/* 用户登录状态 */}
+            {status === 'loading' ? (
+              <div className="w-8 h-8 bg-green-700 rounded-full animate-pulse"></div>
+            ) : session ? (
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2">
+                  {session.user?.image && (
+                    <img
+                      src={session.user.image}
+                      alt={session.user.name || 'User'}
+                      className="w-8 h-8 rounded-full"
+                    />
+                  )}
+                  <span className="text-sm text-green-100">
+                    {session.user?.name || session.user?.email}
+                  </span>
+                </div>
+                <button
+                  onClick={() => signOut()}
+                  className="px-3 py-1 bg-green-700 hover:bg-green-800 text-white text-xs font-medium rounded transition-colors duration-200"
+                >
+                  登出
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/auth/signin"
+                className="px-3 py-1 bg-green-700 hover:bg-green-800 text-white text-xs font-medium rounded transition-colors duration-200"
+              >
+                登录
+              </Link>
+            )}
           </div>
         </div>
       </div>
