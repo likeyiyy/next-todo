@@ -77,29 +77,22 @@ export default function HomePage() {
             <Link
               key={tool.id}
               href={tool.href}
-              className="group bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200"
+              className="group bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-200 aspect-square flex flex-col items-center justify-center p-6"
             >
-              <div className="p-4">
-                {/* Tool Icon and Title */}
-                <div className="flex items-center mb-3">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-xl">{tool.icon}</span>
-                  </div>
-                  <div className="ml-3 flex-1">
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                      {tool.title}
-                    </h3>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {tool.category}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Action Button */}
-                <button className="w-full px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium rounded transition-colors duration-200">
-                  使用
-                </button>
+              {/* Tool Icon */}
+              <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-700 group-hover:scale-110 transition-transform duration-200 mb-4">
+                <span className="text-3xl">{tool.icon}</span>
               </div>
+              
+              {/* Tool Title */}
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center mb-2">
+                {tool.title}
+              </h3>
+              
+              {/* Tool Category */}
+              <span className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                {tool.category}
+              </span>
             </Link>
           ))}
         </div>
