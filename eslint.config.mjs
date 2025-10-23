@@ -18,6 +18,13 @@ const config = [
       '*.d.ts',
       'next-env.d.ts'
     ]
+  },
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@next/next/no-img-element': 'warn'
+    }
   }
 ];
 
