@@ -12,6 +12,7 @@
     "@types/pg": "^8.15.5",
     "@vercel/postgres": "^0.10.0",
     "dotenv": "^17.2.3",
+    "jsoneditor": "^10.4.2",
     "next": "16.0.0",
     "pg": "^8.16.3",
     "react": "19.2.0",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/jsoneditor": "^9.9.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -1,61 +1,129 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import JSONEditor from 'jsoneditor';
 
 export default function JsonEditorPage() {
-  const [jsonInput, setJsonInput] = useState('{\n  "name": "示例",\n  "age": 25,\n  "hobbies": ["编程", "阅读"]\n}');
-  const [formattedJson, setFormattedJson] = useState('');
+  const editorRef = useRef<HTMLDivElement>(null);
+  const jsonEditorRef = useRef<JSONEditor | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState('');
-  const [isValid, setIsValid] = useState(true);
+
+  useEffect(() => {
+    const initEditor = () => {
+      if (typeof window === 'undefined') return;
+
+      try {
+        if (editorRef.current && !jsonEditorRef.current) {
+          const options = {
+            mode: 'code' as const,
+            modes: ['code', 'tree', 'form', 'text', 'view'],
+            onError: (err: Error) => {
+              setError(err.message);
+            },
+            onModeChange: (newMode: string) => {
+              console.log('Mode changed to:', newMode);
+            },
+            onChange: () => {
+              setError('');
+            }
+          };
+
+          jsonEditorRef.current = new JSONEditor(editorRef.current, options);
+
+          // 设置初始 JSON 数据
+          const initialData = {
+            name: "示例",
+            age: 25,
+            hobbies: ["编程", "阅读"],
+            address: {
+              city: "北京",
+              country: "中国"
+            }
+          };
+
+          jsonEditorRef.current.set(initialData);
+          setIsLoaded(true);
+        }
+      } catch (err) {
+        console.error('Failed to load JSONEditor:', err);
+        setError('加载 JSON 编辑器失败');
+      }
+    };
+
+    initEditor();
+
+    return () => {
+      if (jsonEditorRef.current) {
+        jsonEditorRef.current.destroy();
+        jsonEditorRef.current = null;
+      }
+    };
+  }, []);
 
   const formatJson = () => {
-    try {
-      const parsed = JSON.parse(jsonInput);
-      const formatted = JSON.stringify(parsed, null, 2);
-      setFormattedJson(formatted);
-      setError('');
-      setIsValid(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'JSON 格式错误');
-      setIsValid(false);
-      setFormattedJson('');
+    if (jsonEditorRef.current) {
+      try {
+        const data = jsonEditorRef.current.get();
+        jsonEditorRef.current.set(data);
+        setError('');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : '格式化失败');
+      }
     }
   };
 
-  const minifyJson = () => {
-    try {
-      const parsed = JSON.parse(jsonInput);
-      const minified = JSON.stringify(parsed);
-      setFormattedJson(minified);
-      setError('');
-      setIsValid(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'JSON 格式错误');
-      setIsValid(false);
+  const validateJson = () => {
+    if (jsonEditorRef.current) {
+      try {
+        jsonEditorRef.current.get();
+        setError('');
+        alert('JSON 格式正确！');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'JSON 格式错误');
+        alert('JSON 格式错误！');
+      }
     }
   };
 
-  const validateJson = useCallback(() => {
-    try {
-      JSON.parse(jsonInput);
+  const clearJson = () => {
+    if (jsonEditorRef.current) {
+      jsonEditorRef.current.set({});
       setError('');
-      setIsValid(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'JSON 格式错误');
-      setIsValid(false);
     }
-  }, [jsonInput]);
+  };
 
-  const handleInputChange = (value: string) => {
-    setJsonInput(value);
-    try {
-      JSON.parse(value);
-      setError('');
-      setIsValid(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'JSON 格式错误');
-      setIsValid(false);
+  const copyJson = () => {
+    if (jsonEditorRef.current) {
+      try {
+        const data = jsonEditorRef.current.get();
+        const jsonString = JSON.stringify(data, null, 2);
+        navigator.clipboard.writeText(jsonString);
+        alert('JSON 已复制到剪贴板！');
+      } catch {
+        setError('复制失败');
+      }
+    }
+  };
+
+  const downloadJson = () => {
+    if (jsonEditorRef.current) {
+      try {
+        const data = jsonEditorRef.current.get();
+        const jsonString = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch {
+        alert('下载失败');
+      }
     }
   };
 
@@ -90,10 +158,10 @@ export default function JsonEditorPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
           <div className="p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              在线 JSON 编辑器
+              专业 JSON 编辑器
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              支持 JSON 格式化、验证、美化和压缩。输入您的 JSON 数据，我们将为您提供格式化和验证功能。
+              使用专业的 JSONEditor 库，支持多种编辑模式、语法高亮、实时验证和丰富的编辑功能。
             </p>
 
             {/* Toolbar */}
@@ -105,16 +173,22 @@ export default function JsonEditorPage() {
                 格式化
               </button>
               <button
-                onClick={minifyJson}
+                onClick={validateJson}
                 className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg transition-colors duration-200"
               >
-                压缩
+                验证
               </button>
               <button
-                onClick={validateJson}
+                onClick={copyJson}
                 className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white text-sm font-medium rounded-lg transition-colors duration-200"
               >
-                验证
+                复制
+              </button>
+              <button
+                onClick={downloadJson}
+                className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors duration-200"
+              >
+                下载
               </button>
               <button
                 onClick={clearJson}
@@ -124,75 +198,46 @@ export default function JsonEditorPage() {
               </button>
             </div>
 
-            {/* Status */}
-            <div className="mb-4">
-              {isValid ? (
-                <div className="flex items-center text-green-600 dark:text-green-400">
-                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  JSON 格式正确
-                </div>
-              ) : (
-                <div className="flex items-center text-red-600 dark:text-red-400">
+            {/* Error Display */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg">
+                <div className="flex items-center text-red-800 dark:text-red-200">
                   <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                   {error}
                 </div>
+              </div>
+            )}
+
+            {/* JSON Editor Container */}
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  JSON 编辑器
+                </label>
+                {isLoaded && (
+                  <div className="flex items-center text-green-600 dark:text-green-400">
+                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    编辑器已加载
+                  </div>
+                )}
+              </div>
+              <div
+                ref={editorRef}
+                className="w-full h-96 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                style={{ minHeight: '400px' }}
+              />
+              {!isLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-lg">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                    <p className="text-gray-600 dark:text-gray-400">加载 JSON 编辑器...</p>
+                  </div>
+                </div>
               )}
-            </div>
-
-            {/* Input and Output */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Input */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    输入 JSON
-                  </label>
-                  <button
-                    onClick={() => copyToClipboard(jsonInput)}
-                    className="text-xs text-blue-500 hover:text-blue-600"
-                  >
-                    复制
-                  </button>
-                </div>
-                <textarea
-                  value={jsonInput}
-                  onChange={(e) => handleInputChange(e.target.value)}
-                  className="w-full h-96 p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white font-mono text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="请输入 JSON 数据..."
-                />
-              </div>
-
-              {/* Output */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    格式化结果
-                  </label>
-                  {formattedJson && (
-                    <button
-                      onClick={() => copyToClipboard(formattedJson)}
-                      className="text-xs text-blue-500 hover:text-blue-600"
-                    >
-                      复制
-                    </button>
-                  )}
-                </div>
-                <div className="w-full h-96 p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 overflow-auto">
-                  {formattedJson ? (
-                    <pre className="text-sm font-mono text-gray-900 dark:text-white whitespace-pre-wrap">
-                      {formattedJson}
-                    </pre>
-                  ) : (
-                    <div className="text-gray-500 dark:text-gray-400 text-sm">
-                      点击"格式化"或"压缩"查看结果
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
 
             {/* Features */}
@@ -202,22 +247,35 @@ export default function JsonEditorPage() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <div className="text-blue-600 dark:text-blue-400 font-medium mb-2">语法高亮</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">实时显示 JSON 语法结构</div>
+                  <div className="text-blue-600 dark:text-blue-400 font-medium mb-2">多种模式</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">代码、树形、表单、文本、查看模式</div>
                 </div>
                 <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <div className="text-green-600 dark:text-green-400 font-medium mb-2">格式化</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">美化 JSON 格式，提高可读性</div>
+                  <div className="text-green-600 dark:text-green-400 font-medium mb-2">语法高亮</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">专业的 JSON 语法高亮显示</div>
                 </div>
                 <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <div className="text-purple-600 dark:text-purple-400 font-medium mb-2">验证错误</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">检测并提示 JSON 语法错误</div>
+                  <div className="text-purple-600 dark:text-purple-400 font-medium mb-2">实时验证</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">实时检测 JSON 语法错误</div>
                 </div>
                 <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                  <div className="text-orange-600 dark:text-orange-400 font-medium mb-2">压缩优化</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">压缩 JSON 减少文件大小</div>
+                  <div className="text-orange-600 dark:text-orange-400 font-medium mb-2">丰富功能</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">搜索、折叠、复制、下载等</div>
                 </div>
               </div>
+            </div>
+
+            {/* Usage Instructions */}
+            <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">使用说明</h4>
+              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <li>• <strong>代码模式</strong>：直接编辑 JSON 文本，支持语法高亮</li>
+                <li>• <strong>树形模式</strong>：以树形结构编辑 JSON 对象</li>
+                <li>• <strong>表单模式</strong>：以表单形式编辑 JSON 数据</li>
+                <li>• <strong>文本模式</strong>：纯文本编辑模式</li>
+                <li>• <strong>查看模式</strong>：只读模式，用于查看 JSON 数据</li>
+                <li>• 使用工具栏按钮进行格式化、验证、复制和下载操作</li>
+              </ul>
             </div>
           </div>
         </div>
