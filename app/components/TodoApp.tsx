@@ -202,6 +202,7 @@ export default function TodoApp() {
         {/* 底部信息 */}
         <div className="text-center mt-8 text-sm text-gray-500 dark:text-gray-400">
           <p>双击任务可以编辑 • 悬停显示操作按钮</p>
+          <p className="mt-2 text-xs">🕒 现在支持显示创建时间了！</p>
         </div>
       </div>
     </div>
