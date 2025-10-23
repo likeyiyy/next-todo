@@ -204,7 +204,7 @@ export default function JsonEditorPage() {
 
         {/* JSON Editor Container */}
         <div className="h-full">
-          <div 
+          <div
             ref={editorRef}
             className="w-full h-full"
             style={{ minHeight: 'calc(100vh - 6rem)' }}

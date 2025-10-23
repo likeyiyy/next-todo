@@ -28,37 +28,76 @@ body {
 
 /* JSONEditor 自定义样式 */
 .jsoneditor {
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
+  border: 2px solid #d1d5db !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
 }
 
 .dark .jsoneditor {
-  border-color: #4b5563;
-  background-color: #374151;
+  border-color: #4b5563 !important;
+  background-color: #374151 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
 }
 
 .jsoneditor-menu {
-  background-color: #f9fafb;
-  border-bottom: 1px solid #d1d5db;
+  background-color: #f8fafc !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  padding: 8px !important;
 }
 
 .dark .jsoneditor-menu {
-  background-color: #4b5563;
-  border-bottom-color: #6b7280;
+  background-color: #374151 !important;
+  border-bottom-color: #4b5563 !important;
 }
 
 .jsoneditor-menu button {
-  color: #374151;
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+  margin: 2px !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
 }
 
 .dark .jsoneditor-menu button {
-  color: #d1d5db;
+  background-color: #4b5563 !important;
+  border-color: #6b7280 !important;
+  color: #d1d5db !important;
 }
 
 .jsoneditor-menu button:hover {
-  background-color: #e5e7eb;
+  background-color: #f3f4f6 !important;
+  border-color: #9ca3af !important;
 }
 
 .dark .jsoneditor-menu button:hover {
-  background-color: #6b7280;
+  background-color: #6b7280 !important;
+  border-color: #9ca3af !important;
+}
+
+/* 搜索框样式增强 */
+.jsoneditor-menu input[type="text"] {
+  border: 2px solid #d1d5db !important;
+  border-radius: 6px !important;
+  padding: 6px 10px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  color: #374151 !important;
+}
+
+.jsoneditor-menu input[type="text"]:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+  outline: none !important;
+}
+
+.dark .jsoneditor-menu input[type="text"] {
+  border-color: #6b7280 !important;
+  background-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark .jsoneditor-menu input[type="text"]:focus {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1) !important;
 }
