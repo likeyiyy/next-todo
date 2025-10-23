@@ -114,7 +114,7 @@ export default function TextComparePage() {
       <ToolHeader toolName="文本对比工具" toolIcon="📊" />
 
       {/* 主内容区域 */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* 对比摘要 */}
         <div className="mb-6 bg-white rounded-lg border border-gray-200 shadow-sm">
           <div className="p-4 border-b border-gray-200">
@@ -176,7 +176,7 @@ export default function TextComparePage() {
             <textarea
               value={text1}
               onChange={(e) => setText1(e.target.value)}
-              className="w-full h-48 p-4 text-gray-900 bg-white border-none resize-none focus:outline-none font-mono text-sm"
+              className="w-full h-64 p-4 text-gray-900 bg-white border-none resize-none focus:outline-none font-mono text-sm"
               placeholder="在此输入第一段文本..."
             />
           </div>
@@ -191,7 +191,7 @@ export default function TextComparePage() {
             <textarea
               value={text2}
               onChange={(e) => setText2(e.target.value)}
-              className="w-full h-48 p-4 text-gray-900 bg-white border-none resize-none focus:outline-none font-mono text-sm"
+              className="w-full h-64 p-4 text-gray-900 bg-white border-none resize-none focus:outline-none font-mono text-sm"
               placeholder="在此输入第二段文本..."
             />
           </div>
