@@ -26,78 +26,81 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* JSONEditor 自定义样式 */
+/* JSONEditor 强制黑色主题 */
 .jsoneditor {
-  border: 2px solid #d1d5db !important;
+  border: 2px solid #374151 !important;
   border-radius: 0.5rem !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
-}
-
-.dark .jsoneditor {
-  border-color: #4b5563 !important;
-  background-color: #374151 !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  background-color: #1f2937 !important;
 }
 
 .jsoneditor-menu {
-  background-color: #f8fafc !important;
-  border-bottom: 2px solid #e5e7eb !important;
+  background-color: #374151 !important;
+  border-bottom: 2px solid #4b5563 !important;
   padding: 8px !important;
 }
 
-.dark .jsoneditor-menu {
-  background-color: #374151 !important;
-  border-bottom-color: #4b5563 !important;
-}
-
 .jsoneditor-menu button {
-  background-color: #ffffff !important;
-  border: 1px solid #d1d5db !important;
-  color: #374151 !important;
+  background-color: #4b5563 !important;
+  border: 1px solid #6b7280 !important;
+  color: #f9fafb !important;
   margin: 2px !important;
   padding: 4px 8px !important;
   border-radius: 4px !important;
 }
 
-.dark .jsoneditor-menu button {
-  background-color: #4b5563 !important;
-  border-color: #6b7280 !important;
-  color: #d1d5db !important;
-}
-
 .jsoneditor-menu button:hover {
-  background-color: #f3f4f6 !important;
-  border-color: #9ca3af !important;
-}
-
-.dark .jsoneditor-menu button:hover {
   background-color: #6b7280 !important;
   border-color: #9ca3af !important;
 }
 
-/* 搜索框样式增强 */
+/* 搜索框样式 - 黑色主题 */
 .jsoneditor-menu input[type="text"] {
-  border: 2px solid #d1d5db !important;
+  border: 2px solid #6b7280 !important;
   border-radius: 6px !important;
   padding: 6px 10px !important;
-  background-color: #ffffff !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-  color: #374151 !important;
-}
-
-.jsoneditor-menu input[type="text"]:focus {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-  outline: none !important;
-}
-
-.dark .jsoneditor-menu input[type="text"] {
-  border-color: #6b7280 !important;
   background-color: #4b5563 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
   color: #f9fafb !important;
 }
 
-.dark .jsoneditor-menu input[type="text"]:focus {
+.jsoneditor-menu input[type="text"]:focus {
   border-color: #60a5fa !important;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1) !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2) !important;
+  outline: none !important;
+}
+
+/* 编辑器内容区域 */
+.jsoneditor .ace_editor {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+}
+
+/* 行号区域 */
+.jsoneditor .ace_gutter {
+  background-color: #374151 !important;
+  border-right: 1px solid #4b5563 !important;
+}
+
+.jsoneditor .ace_gutter-layer {
+  background-color: #374151 !important;
+}
+
+/* 状态栏 */
+.jsoneditor .ace_status-indicator {
+  background-color: #374151 !important;
+  color: #f9fafb !important;
+}
+
+/* 强制覆盖所有可能的白色背景 */
+.jsoneditor * {
+  background-color: inherit !important;
+}
+
+.jsoneditor .ace_content {
+  background-color: #1f2937 !important;
+}
+
+.jsoneditor .ace_text-layer {
+  background-color: #1f2937 !important;
 }
