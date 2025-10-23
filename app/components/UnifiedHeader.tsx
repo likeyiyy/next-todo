@@ -20,25 +20,23 @@ export default function UnifiedHeader({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-12">
           <div className="flex items-center">
-            {isHomePage ? (
-              <h1 className="text-xl font-bold">
-                🛠️ 个人工具集
-              </h1>
-            ) : (
-              <Link
-                href="/"
-                className="text-green-100 hover:text-white mr-4 transition-colors duration-200"
-              >
-                <h1 className="text-xl font-bold">
+            <h1 className="text-xl font-bold">
+              {isHomePage ? (
+                '🛠️ 个人工具集'
+              ) : (
+                <Link
+                  href="/"
+                  className="text-green-100 hover:text-white transition-colors duration-200"
+                >
                   🛠️ 个人工具集
-                </h1>
-              </Link>
-            )}
+                </Link>
+              )}
+            </h1>
           </div>
 
           {/* 搜索框 */}
-          <div className="flex-1 max-w-md mx-8">
-            <div className="relative">
+          <div className="flex-1 mx-8">
+            <div className="relative max-w-md mx-auto">
               <input
                 type="text"
                 placeholder="搜索工具..."
@@ -54,7 +52,7 @@ export default function UnifiedHeader({
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 min-w-0">
             {/* 用户登录状态 */}
             {status === 'loading' ? (
               <div className="w-8 h-8 bg-green-700 rounded-full animate-pulse"></div>
@@ -68,13 +66,13 @@ export default function UnifiedHeader({
                       className="w-8 h-8 rounded-full"
                     />
                   )}
-                  <span className="text-sm text-green-100">
+                  <span className="text-sm text-green-100 truncate max-w-32">
                     {session.user?.name || session.user?.email}
                   </span>
                 </div>
                 <button
                   onClick={() => signOut()}
-                  className="px-3 py-1 bg-green-700 hover:bg-green-800 text-white text-xs font-medium rounded transition-colors duration-200"
+                  className="px-3 py-1 bg-green-700 hover:bg-green-800 text-white text-xs font-medium rounded transition-colors duration-200 whitespace-nowrap"
                 >
                   登出
                 </button>
@@ -82,7 +80,7 @@ export default function UnifiedHeader({
             ) : (
               <Link
                 href="/auth/signin"
-                className="px-3 py-1 bg-green-700 hover:bg-green-800 text-white text-xs font-medium rounded transition-colors duration-200"
+                className="px-3 py-1 bg-green-700 hover:bg-green-800 text-white text-xs font-medium rounded transition-colors duration-200 whitespace-nowrap"
               >
                 登录
               </Link>
