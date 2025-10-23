@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Todo App",
-  description: "一个现代化的 Todo 应用，使用 Next.js 和 Tailwind CSS 构建",
+  title: "个人工具集 - 在线工具集合",
+  description: "一个现代化的在线工具集合，包含 Todo 应用、JSON 编辑器、文本对比工具等实用工具",
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
