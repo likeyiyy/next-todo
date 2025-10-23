@@ -2,19 +2,22 @@ import { sql } from '@vercel/postgres';
 import { NextRequest, NextResponse } from 'next/server';
 
 // 更新 todo
-export async function PUT(request: NextRequest) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { id, text, completed } = await request.json();
+    const { text, completed } = await request.json();
+    const id = parseInt(params.id);
 
-    if (!id) {
+    if (!id || isNaN(id)) {
       return NextResponse.json(
-        { error: 'Todo ID is required' },
+        { error: 'Valid Todo ID is required' },
         { status: 400 }
       );
     }
 
     let query;
-    let params;
 
     if (text !== undefined) {
       // 更新文本
@@ -59,21 +62,23 @@ export async function PUT(request: NextRequest) {
 }
 
 // 删除 todo
-export async function DELETE(request: NextRequest) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    const id = parseInt(params.id);
 
-    if (!id) {
+    if (!id || isNaN(id)) {
       return NextResponse.json(
-        { error: 'Todo ID is required' },
+        { error: 'Valid Todo ID is required' },
         { status: 400 }
       );
     }
 
     const { rows } = await sql`
       DELETE FROM todos
-      WHERE id = ${parseInt(id)}
+      WHERE id = ${id}
       RETURNING id
     `;
 
