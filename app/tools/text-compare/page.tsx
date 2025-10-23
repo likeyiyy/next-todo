@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import * as Diff from 'diff';
+import ToolHeader from '../../components/ToolHeader';
 
 export default function TextComparePage() {
   const [text1, setText1] = useState('这是第一段文本\n用于对比的示例内容\n包含多行文本');
@@ -13,12 +14,12 @@ export default function TextComparePage() {
     const lines1 = text1.split('\n');
     const lines2 = text2.split('\n');
     const maxLines = Math.max(lines1.length, lines2.length);
-    
+
     const result = [];
     for (let i = 0; i < maxLines; i++) {
       const line1 = lines1[i] || '';
       const line2 = lines2[i] || '';
-      
+
       if (line1 === line2) {
         // 完全相同
         result.push({
@@ -55,7 +56,7 @@ export default function TextComparePage() {
         });
       }
     }
-    
+
     return result;
   };
 
@@ -102,11 +103,11 @@ export default function TextComparePage() {
     return wordDiff.map((part, index) => {
       if (part.added && isLeft) return null; // 左侧不显示新增
       if (part.removed && !isLeft) return null; // 右侧不显示删除
-      
+
       let className = '';
       if (part.added) className = 'bg-green-200 text-green-800';
       else if (part.removed) className = 'bg-red-200 text-red-800';
-      
+
       return (
         <span key={index} className={className}>
           {part.value}
@@ -117,27 +118,7 @@ export default function TextComparePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 绿色顶部横幅 */}
-      <div className="bg-green-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Link 
-                href="/" 
-                className="text-green-100 hover:text-white mr-4 transition-colors duration-200"
-              >
-                ← 返回
-              </Link>
-              <div className="flex items-center">
-                <span className="text-2xl mr-3">📊</span>
-                <h1 className="text-xl font-bold">
-                  文本对比工具
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ToolHeader toolName="文本对比工具" toolIcon="📊" />
 
       {/* 主内容区域 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -207,8 +188,8 @@ export default function TextComparePage() {
                   <div
                     key={index}
                     className={`flex items-start py-2 px-3 border-l-4 ${
-                      item.type === 'deleted' 
-                        ? 'bg-red-50 border-red-400' 
+                      item.type === 'deleted'
+                        ? 'bg-red-50 border-red-400'
                         : item.type === 'modified'
                         ? 'bg-yellow-50 border-yellow-400'
                         : 'bg-white border-gray-300'
@@ -236,8 +217,8 @@ export default function TextComparePage() {
                   <div
                     key={index}
                     className={`flex items-start py-2 px-3 border-l-4 ${
-                      item.type === 'added' 
-                        ? 'bg-green-50 border-green-400' 
+                      item.type === 'added'
+                        ? 'bg-green-50 border-green-400'
                         : item.type === 'modified'
                         ? 'bg-yellow-50 border-yellow-400'
                         : 'bg-white border-gray-300'

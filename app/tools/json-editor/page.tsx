@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import ToolHeader from '../../components/ToolHeader';
 
 // 动态导入 jsoneditor，避免 SSR 问题
 let JSONEditor: any = null;
@@ -134,57 +135,8 @@ export default function JsonEditorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-12">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                ← 返回
-              </Link>
-              <div className="flex items-center">
-                <span className="text-lg mr-2">🔧</span>
-                <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-                  JSON 编辑器
-                </h1>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={formatJson}
-                className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium rounded transition-colors duration-200"
-              >
-                格式化
-              </button>
-              <button
-                onClick={validateJson}
-                className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white text-xs font-medium rounded transition-colors duration-200"
-              >
-                验证
-              </button>
-              <button
-                onClick={copyJson}
-                className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white text-xs font-medium rounded transition-colors duration-200"
-              >
-                复制
-              </button>
-              <button
-                onClick={downloadJson}
-                className="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium rounded transition-colors duration-200"
-              >
-                下载
-              </button>
-              <button
-                onClick={clearJson}
-                className="px-3 py-1 bg-gray-500 hover:bg-gray-600 text-white text-xs font-medium rounded transition-colors duration-200"
-              >
-                清空
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-50">
+      <ToolHeader toolName="JSON 编辑器" toolIcon="🔧" />
 
       {/* Main Content */}
       <main className="h-[calc(100vh-3rem)]">
