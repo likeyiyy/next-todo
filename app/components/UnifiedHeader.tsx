@@ -7,18 +7,10 @@ import { useState } from 'react';
 interface UnifiedHeaderProps {
   // 首页模式
   isHomePage?: boolean;
-  toolCount?: number;
-
-  // 工具页面模式
-  toolName?: string;
-  toolIcon?: string;
 }
 
 export default function UnifiedHeader({
-  isHomePage = false,
-  toolCount = 0,
-  toolName = '',
-  toolIcon = ''
+  isHomePage = false
 }: UnifiedHeaderProps) {
   const { data: session, status } = useSession();
   const [searchTerm, setSearchTerm] = useState('');
@@ -63,17 +55,6 @@ export default function UnifiedHeader({
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* 中间内容：首页显示工具数量，工具页面显示工具名称 */}
-            {isHomePage ? (
-              <span className="text-sm text-green-100">
-                {toolCount} 个工具
-              </span>
-            ) : (
-              <span className="text-sm text-green-100">
-                {toolIcon} {toolName}
-              </span>
-            )}
-
             {/* 用户登录状态 */}
             {status === 'loading' ? (
               <div className="w-8 h-8 bg-green-700 rounded-full animate-pulse"></div>

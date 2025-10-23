@@ -5,7 +5,7 @@ import UnifiedHeader from '../../components/UnifiedHeader';
 export default function TodoToolPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <UnifiedHeader toolName="Todo 应用" toolIcon="📝" />
+      <UnifiedHeader />
 
       {/* Main Content */}
       <main className="h-[calc(100vh-4rem)]">
