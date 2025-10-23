@@ -26,9 +26,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* JSONEditor 采用 jsoneditoronline.org 配色方案 - 增强优先级 */
+/* JSONEditor 采用绿色配色方案 - 增强优先级 */
 .jsoneditor {
-  border: 1px solid #d1d5db !important;
+  border: 1px solid #789A65 !important;
   border-radius: 0.5rem !important;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
   background-color: #ffffff !important;
@@ -36,8 +36,8 @@ body {
 
 /* 工具栏样式 - 使用更具体的选择器 */
 .jsoneditor .jsoneditor-menu {
-  background-color: #f8f8f8 !important;
-  border-bottom: 1px solid #d1d5db !important;
+  background-color: #789A65 !important;
+  border-bottom: 1px solid #789A65 !important;
   padding: 8px !important;
 }
 
@@ -151,8 +151,8 @@ body {
 
 /* 强制覆盖 JSONEditor 内置样式 - 最高优先级 */
 div.jsoneditor .jsoneditor-menu {
-  background-color: #f8f8f8 !important;
-  border-bottom: 1px solid #d1d5db !important;
+  background-color: #789A65 !important;
+  border-bottom: 1px solid #789A65 !important;
 }
 
 div.jsoneditor .jsoneditor-menu button,
