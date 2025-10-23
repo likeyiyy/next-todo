@@ -26,81 +26,99 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* JSONEditor 强制黑色主题 */
+/* JSONEditor 采用 jsoneditoronline.org 配色方案 */
 .jsoneditor {
-  border: 2px solid #374151 !important;
+  border: 1px solid #d1d5db !important;
   border-radius: 0.5rem !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-  background-color: #1f2937 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  background-color: #ffffff !important;
 }
 
 .jsoneditor-menu {
-  background-color: #374151 !important;
-  border-bottom: 2px solid #4b5563 !important;
+  background-color: #f8f8f8 !important;
+  border-bottom: 1px solid #d1d5db !important;
   padding: 8px !important;
 }
 
 .jsoneditor-menu button {
-  background-color: #4b5563 !important;
-  border: 1px solid #6b7280 !important;
-  color: #f9fafb !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
   margin: 2px !important;
   padding: 4px 8px !important;
   border-radius: 4px !important;
 }
 
 .jsoneditor-menu button:hover {
-  background-color: #6b7280 !important;
+  background-color: #f3f4f6 !important;
   border-color: #9ca3af !important;
 }
 
-/* 搜索框样式 - 黑色主题 */
+/* 搜索框样式 - 浅色主题 */
 .jsoneditor-menu input[type="text"] {
-  border: 2px solid #6b7280 !important;
-  border-radius: 6px !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 4px !important;
   padding: 6px 10px !important;
-  background-color: #4b5563 !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
-  color: #f9fafb !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  color: #374151 !important;
 }
 
 .jsoneditor-menu input[type="text"]:focus {
-  border-color: #60a5fa !important;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2) !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
   outline: none !important;
 }
 
-/* 编辑器内容区域 */
+/* 编辑器内容区域 - 纯白色 */
 .jsoneditor .ace_editor {
-  background-color: #1f2937 !important;
-  color: #f9fafb !important;
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
 }
 
-/* 行号区域 */
+/* 行号区域 - 浅灰色 */
 .jsoneditor .ace_gutter {
-  background-color: #374151 !important;
-  border-right: 1px solid #4b5563 !important;
+  background-color: #f0f0f0 !important;
+  border-right: 1px solid #d1d5db !important;
 }
 
 .jsoneditor .ace_gutter-layer {
-  background-color: #374151 !important;
+  background-color: #f0f0f0 !important;
+}
+
+/* 行号文字 */
+.jsoneditor .ace_gutter-cell {
+  color: #6b7280 !important;
 }
 
 /* 状态栏 */
 .jsoneditor .ace_status-indicator {
-  background-color: #374151 !important;
-  color: #f9fafb !important;
+  background-color: #ffffff !important;
+  color: #374151 !important;
 }
 
-/* 强制覆盖所有可能的白色背景 */
-.jsoneditor * {
-  background-color: inherit !important;
-}
-
+/* 确保编辑器内容区域是白色 */
 .jsoneditor .ace_content {
-  background-color: #1f2937 !important;
+  background-color: #ffffff !important;
 }
 
 .jsoneditor .ace_text-layer {
-  background-color: #1f2937 !important;
+  background-color: #ffffff !important;
+}
+
+/* 语法高亮颜色调整 */
+.jsoneditor .ace_string {
+  color: #059669 !important; /* 绿色字符串 */
+}
+
+.jsoneditor .ace_numeric {
+  color: #dc2626 !important; /* 红色数字 */
+}
+
+.jsoneditor .ace_keyword {
+  color: #7c3aed !important; /* 紫色关键字 */
+}
+
+.jsoneditor .ace_constant {
+  color: #ea580c !important; /* 橙色常量 */
 }
