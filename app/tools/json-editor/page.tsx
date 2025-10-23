@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import UnifiedHeader from '../../components/UnifiedHeader';
 
 // 动态导入 jsoneditor，避免 SSR 问题

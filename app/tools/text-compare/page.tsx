@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { Diff, Hunk, parseDiff, tokenize, markEdits } from 'react-diff-view';
 import 'react-diff-view/style/index.css';
 import UnifiedHeader from '../../components/UnifiedHeader';

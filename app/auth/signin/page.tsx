@@ -3,10 +3,10 @@
 import { signIn, getProviders } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import ToolHeader from '../../components/ToolHeader';
+import UnifiedHeader from '../../components/UnifiedHeader';
 
 export default function SignIn() {
-  const [providers, setProviders] = useState<any>(null);
+  const [providers, setProviders] = useState<Record<string, any> | null>(null);
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -18,7 +18,7 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <ToolHeader toolName="登录" toolIcon="🔐" />
+      <UnifiedHeader />
 
       <div className="max-w-md mx-auto mt-16">
         <div className="bg-white rounded-lg shadow-md p-8">
@@ -33,7 +33,7 @@ export default function SignIn() {
 
           <div className="space-y-4">
             {providers &&
-              Object.values(providers).map((provider: any) => (
+              Object.values(providers).map((provider: Record<string, any>) => (
                 <div key={provider.name}>
                   <button
                     onClick={() => signIn(provider.id, { callbackUrl: '/' })}
