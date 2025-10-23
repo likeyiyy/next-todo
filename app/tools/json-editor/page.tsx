@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import ToolHeader from '../../components/ToolHeader';
+import UnifiedHeader from '../../components/UnifiedHeader';
 
 // 动态导入 jsoneditor，避免 SSR 问题
 let JSONEditor: any = null;
@@ -136,7 +136,7 @@ export default function JsonEditorPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <ToolHeader toolName="JSON 编辑器" toolIcon="🔧" />
+      <UnifiedHeader toolName="JSON 编辑器" toolIcon="🔧" />
 
       {/* Main Content */}
       <main className="h-[calc(100vh-3rem)]">

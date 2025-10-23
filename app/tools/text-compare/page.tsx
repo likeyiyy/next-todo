@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Diff, Hunk, parseDiff, tokenize, markEdits } from 'react-diff-view';
 import 'react-diff-view/style/index.css';
-import ToolHeader from '../../components/ToolHeader';
+import UnifiedHeader from '../../components/UnifiedHeader';
 
 export default function TextComparePage() {
   const [text1, setText1] = useState('这是第一段文本\n用于对比的示例内容\n包含多行文本\nHello World');
@@ -111,7 +111,7 @@ export default function TextComparePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <ToolHeader toolName="文本对比工具" toolIcon="📊" />
+      <UnifiedHeader toolName="文本对比工具" toolIcon="📊" />
 
       {/* 主内容区域 */}
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">

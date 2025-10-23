@@ -3,12 +3,22 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 
-interface ToolHeaderProps {
-  toolName: string;
-  toolIcon: string;
+interface UnifiedHeaderProps {
+  // 首页模式
+  isHomePage?: boolean;
+  toolCount?: number;
+  
+  // 工具页面模式
+  toolName?: string;
+  toolIcon?: string;
 }
 
-export default function ToolHeader({ toolName, toolIcon }: ToolHeaderProps) {
+export default function UnifiedHeader({ 
+  isHomePage = false, 
+  toolCount = 0, 
+  toolName = '', 
+  toolIcon = '' 
+}: UnifiedHeaderProps) {
   const { data: session, status } = useSession();
 
   return (
@@ -16,15 +26,22 @@ export default function ToolHeader({ toolName, toolIcon }: ToolHeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-12">
           <div className="flex items-center">
-            <Link
-              href="/"
-              className="text-green-100 hover:text-white mr-4 transition-colors duration-200"
-            >
+            {isHomePage ? (
               <h1 className="text-xl font-bold">
                 🛠️ 个人工具集
               </h1>
-            </Link>
+            ) : (
+              <Link
+                href="/"
+                className="text-green-100 hover:text-white mr-4 transition-colors duration-200"
+              >
+                <h1 className="text-xl font-bold">
+                  🛠️ 个人工具集
+                </h1>
+              </Link>
+            )}
           </div>
+          
           {/* 搜索框 */}
           <div className="flex-1 max-w-md mx-8">
             <div className="relative">
@@ -40,10 +57,19 @@ export default function ToolHeader({ toolName, toolIcon }: ToolHeaderProps) {
               </div>
             </div>
           </div>
+          
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-green-100">
-              {toolIcon} {toolName}
-            </span>
+            {/* 中间内容：首页显示工具数量，工具页面显示工具名称 */}
+            {isHomePage ? (
+              <span className="text-sm text-green-100">
+                {toolCount} 个工具
+              </span>
+            ) : (
+              <span className="text-sm text-green-100">
+                {toolIcon} {toolName}
+              </span>
+            )}
+            
             {/* 用户登录状态 */}
             {status === 'loading' ? (
               <div className="w-8 h-8 bg-green-700 rounded-full animate-pulse"></div>
