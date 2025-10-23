@@ -49,7 +49,7 @@ async function initDatabase() {
 
     // 插入一些示例数据
     await client.query(`
-      INSERT INTO todos (text, completed) VALUES 
+      INSERT INTO todos (text, completed) VALUES
         ('欢迎使用 Vercel Postgres Todo 应用！', false),
         ('点击复选框标记任务完成', false),
         ('双击任务文本可以编辑', false)

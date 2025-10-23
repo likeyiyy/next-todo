@@ -36,7 +36,7 @@ export class TodoAPI {
 
   // 更新 todo 文本
   static async updateText(id: number, text: string): Promise<Todo> {
-    const response = await fetch(`${API_BASE}/${id}`, {
+    const response = await fetch(`${API_BASE}/${id}?id=${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export class TodoAPI {
 
   // 切换完成状态
   static async toggleComplete(id: number, completed: boolean): Promise<Todo> {
-    const response = await fetch(`${API_BASE}/${id}`, {
+    const response = await fetch(`${API_BASE}/${id}?id=${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -2,17 +2,23 @@ import { sql } from '@vercel/postgres';
 import { NextRequest, NextResponse } from 'next/server';
 
 // 更新 todo
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
     const { text, completed } = await request.json();
-    const id = parseInt(params.id);
 
-    if (!id || isNaN(id)) {
+    if (!id) {
       return NextResponse.json(
-        { error: 'Valid Todo ID is required' },
+        { error: 'Todo ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const todoId = parseInt(id);
+    if (isNaN(todoId)) {
+      return NextResponse.json(
+        { error: 'Invalid Todo ID' },
         { status: 400 }
       );
     }
@@ -24,7 +30,7 @@ export async function PUT(
       query = sql`
         UPDATE todos
         SET text = ${text.trim()}, updated_at = NOW()
-        WHERE id = ${id}
+        WHERE id = ${todoId}
         RETURNING id, text, completed, created_at, updated_at
       `;
     } else if (completed !== undefined) {
@@ -32,7 +38,7 @@ export async function PUT(
       query = sql`
         UPDATE todos
         SET completed = ${completed}, updated_at = NOW()
-        WHERE id = ${id}
+        WHERE id = ${todoId}
         RETURNING id, text, completed, created_at, updated_at
       `;
     } else {
@@ -62,23 +68,29 @@ export async function PUT(
 }
 
 // 删除 todo
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest) {
   try {
-    const id = parseInt(params.id);
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
 
-    if (!id || isNaN(id)) {
+    if (!id) {
       return NextResponse.json(
-        { error: 'Valid Todo ID is required' },
+        { error: 'Todo ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const todoId = parseInt(id);
+    if (isNaN(todoId)) {
+      return NextResponse.json(
+        { error: 'Invalid Todo ID' },
         { status: 400 }
       );
     }
 
     const { rows } = await sql`
       DELETE FROM todos
-      WHERE id = ${id}
+      WHERE id = ${todoId}
       RETURNING id
     `;
 
