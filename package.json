@@ -11,6 +11,8 @@
   "dependencies": {
     "@types/pg": "^8.15.5",
     "@vercel/postgres": "^0.10.0",
+    "diff": "^8.0.2",
+    "diff2html": "^3.4.52",
     "dotenv": "^17.2.3",
     "jsoneditor": "^10.4.2",
     "next": "16.0.0",

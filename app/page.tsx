@@ -83,12 +83,12 @@ export default function HomePage() {
               <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-700 group-hover:scale-110 transition-transform duration-200 mb-4">
                 <span className="text-3xl">{tool.icon}</span>
               </div>
-              
+
               {/* Tool Title */}
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center mb-2">
                 {tool.title}
               </h3>
-              
+
               {/* Tool Category */}
               <span className="text-sm text-gray-500 dark:text-gray-400 text-center">
                 {tool.category}
