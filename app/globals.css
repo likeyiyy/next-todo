@@ -50,13 +50,41 @@ body {
   margin: 2px !important;
   padding: 4px 8px !important;
   border-radius: 4px !important;
-  box-shadow: none !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1) !important;
 }
 
 .jsoneditor .jsoneditor-menu button:hover,
 .jsoneditor .jsoneditor-menu .jsoneditor-button:hover {
   background-color: #f3f4f6 !important;
   border-color: #9ca3af !important;
+}
+
+/* 模式切换按钮组 - 确保每个按钮都有独立背景 */
+.jsoneditor .jsoneditor-menu .jsoneditor-modes button {
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+  margin: 1px !important;
+  padding: 4px 8px !important;
+  border-radius: 3px !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+.jsoneditor .jsoneditor-menu .jsoneditor-modes button.active {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+
+/* 搜索框和功能按钮组 */
+.jsoneditor .jsoneditor-menu .jsoneditor-search,
+.jsoneditor .jsoneditor-menu input[type="text"] {
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+  padding: 4px 8px !important;
+  border-radius: 3px !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1) !important;
 }
 
 /* 搜索框样式 - 使用更具体的选择器 */
@@ -161,7 +189,8 @@ div.jsoneditor .jsoneditor-menu .jsoneditor-btn {
   background-color: #ffffff !important;
   border: 1px solid #d1d5db !important;
   color: #374151 !important;
-  box-shadow: none !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1) !important;
+  border-radius: 3px !important;
 }
 
 div.jsoneditor .jsoneditor-menu input[type="text"],
