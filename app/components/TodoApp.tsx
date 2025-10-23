@@ -1,14 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
-
-interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Date;
-}
+import { TodoAPI, Todo } from '@/lib/todo-api';
 
 type FilterType = 'all' | 'active' | 'completed';
 
@@ -16,41 +10,80 @@ export default function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState('');
   const [filter, setFilter] = useState<FilterType>('all');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // 生成唯一 ID
-  const generateId = () => Math.random().toString(36).substr(2, 9);
+  // 加载 todos
+  useEffect(() => {
+    loadTodos();
+  }, []);
+
+  const loadTodos = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await TodoAPI.getAll();
+      setTodos(data);
+    } catch (err) {
+      setError('加载待办事项失败');
+      console.error('Error loading todos:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // 添加新 Todo
-  const addTodo = () => {
+  const addTodo = async () => {
     if (newTodo.trim()) {
-      const todo: Todo = {
-        id: generateId(),
-        text: newTodo.trim(),
-        completed: false,
-        createdAt: new Date(),
-      };
-      setTodos([todo, ...todos]);
-      setNewTodo('');
+      try {
+        setError(null);
+        const todo = await TodoAPI.create(newTodo.trim());
+        setTodos([todo, ...todos]);
+        setNewTodo('');
+      } catch (err) {
+        setError('添加待办事项失败');
+        console.error('Error adding todo:', err);
+      }
     }
   };
 
   // 切换完成状态
-  const toggleTodo = (id: string) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+  const toggleTodo = async (id: number) => {
+    try {
+      const todo = todos.find(t => t.id === id);
+      if (!todo) return;
+
+      setError(null);
+      const updatedTodo = await TodoAPI.toggleComplete(id, !todo.completed);
+      setTodos(todos.map(t => t.id === id ? updatedTodo : t));
+    } catch (err) {
+      setError('更新待办事项失败');
+      console.error('Error toggling todo:', err);
+    }
   };
 
   // 删除 Todo
-  const deleteTodo = (id: string) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+  const deleteTodo = async (id: number) => {
+    try {
+      setError(null);
+      await TodoAPI.delete(id);
+      setTodos(todos.filter(todo => todo.id !== id));
+    } catch (err) {
+      setError('删除待办事项失败');
+      console.error('Error deleting todo:', err);
+    }
   };
 
   // 编辑 Todo
-  const editTodo = (id: string, newText: string) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, text: newText } : todo
-    ));
+  const editTodo = async (id: number, newText: string) => {
+    try {
+      setError(null);
+      const updatedTodo = await TodoAPI.updateText(id, newText);
+      setTodos(todos.map(t => t.id === id ? updatedTodo : t));
+    } catch (err) {
+      setError('编辑待办事项失败');
+      console.error('Error editing todo:', err);
+    }
   };
 
   // 清除已完成的 Todo
@@ -78,13 +111,15 @@ export default function TodoApp() {
   const getTimeStats = () => {
     if (todos.length === 0) return null;
 
-    const sortedTodos = [...todos].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    const sortedTodos = [...todos].sort((a, b) =>
+      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
     const earliest = sortedTodos[0];
     const latest = sortedTodos[sortedTodos.length - 1];
 
     return {
-      earliest: earliest.createdAt,
-      latest: latest.createdAt,
+      earliest: new Date(earliest.created_at),
+      latest: new Date(latest.created_at),
       total: todos.length
     };
   };
@@ -100,9 +135,21 @@ export default function TodoApp() {
             📝 Todo App
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            使用 Next.js 和 Tailwind CSS 构建的现代化 Todo 应用
+            使用 Next.js、Tailwind CSS 和 Vercel Postgres 构建的现代化 Todo 应用
           </p>
         </div>
+
+        {/* 错误提示 */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 dark:bg-red-900 dark:border-red-700 dark:text-red-200">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              {error}
+            </div>
+          </div>
+        )}
 
         {/* 添加 Todo 输入框 */}
         <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 mb-6">
@@ -174,7 +221,16 @@ export default function TodoApp() {
 
         {/* Todo 列表 */}
         <div className="space-y-3">
-          {filteredTodos.length === 0 ? (
+          {loading ? (
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8 text-center">
+              <div className="text-gray-400 dark:text-gray-500 mb-4">
+                <svg className="w-16 h-16 mx-auto animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400">加载中...</p>
+            </div>
+          ) : filteredTodos.length === 0 ? (
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8 text-center">
               <div className="text-gray-400 dark:text-gray-500 mb-4">
                 <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">

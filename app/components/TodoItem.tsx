@@ -1,19 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-
-interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Date;
-}
+import { Todo } from '@/lib/todo-api';
 
 interface TodoItemProps {
   todo: Todo;
-  onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
-  onEdit: (id: string, newText: string) => void;
+  onToggle: (id: number) => void;
+  onDelete: (id: number) => void;
+  onEdit: (id: number, newText: string) => void;
 }
 
 export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
@@ -83,7 +77,7 @@ export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemP
               {todo.text}
             </span>
             <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              📅 创建于 {new Date(todo.createdAt).toLocaleString('zh-CN', {
+              📅 创建于 {new Date(todo.created_at).toLocaleString('zh-CN', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
