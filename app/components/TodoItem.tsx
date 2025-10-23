@@ -71,16 +71,27 @@ export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemP
             autoFocus
           />
         ) : (
-          <span
-            className={`cursor-pointer transition-colors ${
-              todo.completed
-                ? 'text-gray-500 line-through dark:text-gray-400'
-                : 'text-gray-900 dark:text-gray-100'
-            }`}
-            onDoubleClick={() => setIsEditing(true)}
-          >
-            {todo.text}
-          </span>
+          <div>
+            <span
+              className={`cursor-pointer transition-colors ${
+                todo.completed
+                  ? 'text-gray-500 line-through dark:text-gray-400'
+                  : 'text-gray-900 dark:text-gray-100'
+              }`}
+              onDoubleClick={() => setIsEditing(true)}
+            >
+              {todo.text}
+            </span>
+            <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              📅 创建于 {new Date(todo.createdAt).toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
+            </div>
+          </div>
         )}
       </div>
 

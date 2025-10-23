@@ -74,6 +74,23 @@ export default function TodoApp() {
   const activeCount = todos.filter(todo => !todo.completed).length;
   const completedCount = todos.filter(todo => todo.completed).length;
 
+  // 时间统计
+  const getTimeStats = () => {
+    if (todos.length === 0) return null;
+
+    const sortedTodos = [...todos].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    const earliest = sortedTodos[0];
+    const latest = sortedTodos[sortedTodos.length - 1];
+
+    return {
+      earliest: earliest.createdAt,
+      latest: latest.createdAt,
+      total: todos.length
+    };
+  };
+
+  const timeStats = getTimeStats();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
       <div className="max-w-2xl mx-auto">
@@ -127,17 +144,29 @@ export default function TodoApp() {
               ))}
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-              <span>总计: {todos.length}</span>
-              <span>进行中: {activeCount}</span>
-              <span>已完成: {completedCount}</span>
-              {completedCount > 0 && (
-                <button
-                  onClick={clearCompleted}
-                  className="text-red-500 hover:text-red-600 transition-colors"
-                >
-                  清除已完成
-                </button>
+            <div className="flex flex-col gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex items-center gap-4">
+                <span>总计: {todos.length}</span>
+                <span>进行中: {activeCount}</span>
+                <span>已完成: {completedCount}</span>
+                {completedCount > 0 && (
+                  <button
+                    onClick={clearCompleted}
+                    className="text-red-500 hover:text-red-600 transition-colors"
+                  >
+                    清除已完成
+                  </button>
+                )}
+              </div>
+              {timeStats && (
+                <div className="text-xs text-gray-500 dark:text-gray-500">
+                  📊 时间范围: {timeStats.earliest.toLocaleDateString('zh-CN')} 至 {timeStats.latest.toLocaleDateString('zh-CN')}
+                  {timeStats.total > 1 && (
+                    <span className="ml-2">
+                      (跨度 {Math.ceil((timeStats.latest.getTime() - timeStats.earliest.getTime()) / (1000 * 60 * 60 * 24))} 天)
+                    </span>
+                  )}
+                </div>
               )}
             </div>
           </div>
