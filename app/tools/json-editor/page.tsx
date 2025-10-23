@@ -2,22 +2,29 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import JSONEditor from 'jsoneditor';
+
+// 动态导入 jsoneditor，避免 SSR 问题
+let JSONEditor: any = null;
+let JSONEditorMode: any = null;
 
 export default function JsonEditorPage() {
   const editorRef = useRef<HTMLDivElement>(null);
-  const jsonEditorRef = useRef<JSONEditor | null>(null);
+  const jsonEditorRef = useRef<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const initEditor = () => {
+    const initEditor = async () => {
       if (typeof window === 'undefined') return;
 
       try {
+        // 动态导入 jsoneditor
+        const jsoneditorModule = await import('jsoneditor');
+        JSONEditor = jsoneditorModule.default;
+
         if (editorRef.current && !jsonEditorRef.current) {
           const options = {
-            mode: 'code' as const,
+            mode: 'code',
             modes: ['code', 'tree', 'form', 'text', 'view'],
             onError: (err: Error) => {
               setError(err.message);
