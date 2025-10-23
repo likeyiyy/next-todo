@@ -129,7 +129,7 @@ export default function TextComparePage() {
             </div>
           </div>
         ) : (
-          // 对比模式
+          // 对比模式 - 美化版本
           <div className="h-full overflow-auto">
             <div className="max-w-7xl mx-auto p-4">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
@@ -154,32 +154,39 @@ export default function TextComparePage() {
                 </div>
                 
                 <div className="p-4">
-                  <div className="font-mono text-sm">
+                  <div className="font-mono text-sm bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden">
                     {diff?.map((part, index) => {
                       const lines = part.value.split('\n');
                       return lines.map((line, lineIndex) => {
                         if (lineIndex === lines.length - 1 && line === '') return null;
                         
-                        let className = 'block py-1 px-2 rounded';
+                        let className = 'flex items-center py-2 px-3 border-l-4';
                         let prefix = '';
+                        let icon = '';
                         
                         if (part.added) {
-                          className += ' bg-green-50 dark:bg-green-900/20 border-l-4 border-green-400';
-                          prefix = '+ ';
+                          className += ' bg-green-50 dark:bg-green-900/20 border-green-400';
+                          prefix = '+';
+                          icon = '➕';
                         } else if (part.removed) {
-                          className += ' bg-red-50 dark:bg-red-900/20 border-l-4 border-red-400';
-                          prefix = '- ';
+                          className += ' bg-red-50 dark:bg-red-900/20 border-red-400';
+                          prefix = '-';
+                          icon = '➖';
                         } else {
-                          className += ' bg-gray-50 dark:bg-gray-800';
-                          prefix = '  ';
+                          className += ' bg-gray-50 dark:bg-gray-800 border-gray-300';
+                          prefix = ' ';
+                          icon = ' ';
                         }
                         
                         return (
                           <div key={`${index}-${lineIndex}`} className={className}>
-                            <span className="text-gray-500 dark:text-gray-400 mr-2">
+                            <span className="text-gray-500 dark:text-gray-400 mr-3 w-6 text-center">
+                              {icon}
+                            </span>
+                            <span className="text-gray-500 dark:text-gray-400 mr-3 w-8 text-center font-bold">
                               {prefix}
                             </span>
-                            <span className="text-gray-900 dark:text-white">
+                            <span className="text-gray-900 dark:text-white flex-1">
                               {line || '\u00A0'}
                             </span>
                           </div>
