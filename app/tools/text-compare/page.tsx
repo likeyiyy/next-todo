@@ -2,27 +2,27 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Diff, Hunk, parseDiff } from 'react-diff-view';
+import { Diff, Hunk, parseDiff, tokenize, markEdits } from 'react-diff-view';
 import 'react-diff-view/style/index.css';
 import ToolHeader from '../../components/ToolHeader';
 
 export default function TextComparePage() {
-  const [text1, setText1] = useState('这是第一段文本\n用于对比的示例内容\n包含多行文本');
-  const [text2, setText2] = useState('这是第二段文本\n用于对比的示例内容\n包含修改后的文本');
+  const [text1, setText1] = useState('这是第一段文本\n用于对比的示例内容\n包含多行文本\nHello World');
+  const [text2, setText2] = useState('这是第二段文本\n用于对比的示例内容\n包含修改后的文本\nHello React');
 
   // 生成 Git diff 格式的文本
   const generateGitDiff = () => {
     const lines1 = text1.split('\n');
     const lines2 = text2.split('\n');
-    
+
     let diffText = '--- a/text1.txt\n+++ b/text2.txt\n@@ -1,' + lines1.length + ' +1,' + lines2.length + ' @@\n';
-    
+
     // 简单的行级差异生成
     const maxLines = Math.max(lines1.length, lines2.length);
     for (let i = 0; i < maxLines; i++) {
       const line1 = lines1[i] || '';
       const line2 = lines2[i] || '';
-      
+
       if (line1 === line2) {
         diffText += ' ' + line1 + '\n';
       } else if (line1 && !line2) {
@@ -34,12 +34,37 @@ export default function TextComparePage() {
         diffText += '+' + line2 + '\n';
       }
     }
-    
+
     return diffText;
   };
 
   const diffText = generateGitDiff();
   const files = parseDiff(diffText);
+
+  // 为每个文件生成字符级别的差异标记
+  const renderFileWithCharDiff = (file: any) => {
+    const options = {
+      enhancers: [markEdits(file.hunks, { type: 'block' })],
+    };
+
+    const tokens = tokenize(file.hunks, options);
+
+    return (
+      <Diff
+        key={`${file.oldRevision}-${file.newRevision}`}
+        hunks={file.hunks}
+        viewType="split"
+        diffType={file.type}
+        tokens={tokens}
+      >
+        {(hunks) =>
+          hunks.map((hunk: any) => (
+            <Hunk key={hunk.content} hunk={hunk} />
+          ))
+        }
+      </Diff>
+    );
+  };
 
   const swapTexts = () => {
     const temp = text1;
@@ -62,11 +87,11 @@ export default function TextComparePage() {
     const lines1 = text1.split('\n');
     const lines2 = text2.split('\n');
     const maxLines = Math.max(lines1.length, lines2.length);
-    
+
     for (let i = 0; i < maxLines; i++) {
       const line1 = lines1[i] || '';
       const line2 = lines2[i] || '';
-      
+
       if (line1 === line2) {
         unchanged++;
       } else if (line1 && !line2) {
@@ -78,7 +103,7 @@ export default function TextComparePage() {
         removed++;
       }
     }
-    
+
     return { added, removed, unchanged };
   };
 
@@ -135,15 +160,7 @@ export default function TextComparePage() {
             <h3 className="text-sm font-medium text-gray-900">差异对比</h3>
           </div>
           <div className="max-h-96 overflow-auto">
-            {files.map((file, index) => (
-              <Diff key={index} hunks={file.hunks} viewType="split" diffType={file.type}>
-                {(hunks) =>
-                  hunks.map((hunk) => (
-                    <Hunk key={hunk.content} hunk={hunk} />
-                  ))
-                }
-              </Diff>
-            ))}
+            {files.map((file, index) => renderFileWithCharDiff(file))}
           </div>
         </div>
 
