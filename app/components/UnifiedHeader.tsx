@@ -2,24 +2,26 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
+import { useState } from 'react';
 
 interface UnifiedHeaderProps {
   // 首页模式
   isHomePage?: boolean;
   toolCount?: number;
-  
+
   // 工具页面模式
   toolName?: string;
   toolIcon?: string;
 }
 
-export default function UnifiedHeader({ 
-  isHomePage = false, 
-  toolCount = 0, 
-  toolName = '', 
-  toolIcon = '' 
+export default function UnifiedHeader({
+  isHomePage = false,
+  toolCount = 0,
+  toolName = '',
+  toolIcon = ''
 }: UnifiedHeaderProps) {
   const { data: session, status } = useSession();
+  const [searchTerm, setSearchTerm] = useState('');
 
   return (
     <div className="bg-green-600 text-white">
@@ -41,13 +43,15 @@ export default function UnifiedHeader({
               </Link>
             )}
           </div>
-          
+
           {/* 搜索框 */}
           <div className="flex-1 max-w-md mx-8">
             <div className="relative">
               <input
                 type="text"
                 placeholder="搜索工具..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 pl-10 text-gray-900 bg-green-700 border border-green-500 rounded-lg focus:ring-2 focus:ring-green-300 focus:border-transparent placeholder-green-200"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -57,7 +61,7 @@ export default function UnifiedHeader({
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             {/* 中间内容：首页显示工具数量，工具页面显示工具名称 */}
             {isHomePage ? (
@@ -69,7 +73,7 @@ export default function UnifiedHeader({
                 {toolIcon} {toolName}
               </span>
             )}
-            
+
             {/* 用户登录状态 */}
             {status === 'loading' ? (
               <div className="w-8 h-8 bg-green-700 rounded-full animate-pulse"></div>
