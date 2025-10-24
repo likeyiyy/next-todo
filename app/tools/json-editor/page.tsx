@@ -25,6 +25,7 @@ export default function JsonEditorPage() {
           const options = {
             mode: 'code',
             modes: ['code', 'tree', 'form', 'text', 'view'],
+            indentation: 4,
             onError: (err: Error) => {
               setError(err.message);
             },
