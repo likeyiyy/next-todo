@@ -31,6 +31,16 @@ const tools = [
     href: '/tools/text-compare',
     color: 'bg-purple-500',
     features: ['差异高亮', '行级对比', '导出结果']
+  },
+  {
+    id: 'global-clock',
+    title: '全球时钟',
+    description: '实时显示全球主要城市的当前时间',
+    icon: '🌍',
+    category: '实用工具',
+    href: '/tools/global-clock',
+    color: 'bg-indigo-500',
+    features: ['实时更新', '多时区', '地区分组']
   }
 ];
 
