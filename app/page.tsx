@@ -51,6 +51,106 @@ const tools = [
     href: '/tools/html-preview',
     color: 'bg-orange-500',
     features: ['实时预览', '代码编辑', '导入导出']
+  },
+  {
+    id: 'markdown-editor',
+    title: 'Markdown 编辑器',
+    description: '实时编辑和预览 Markdown，支持导出 HTML/PDF',
+    icon: '📄',
+    category: '开发工具',
+    href: '/tools/markdown-editor',
+    color: 'bg-cyan-500',
+    features: ['实时预览', '语法高亮', '多格式导出']
+  },
+  {
+    id: 'regex-tester',
+    title: '正则表达式',
+    description: '测试和调试正则表达式，显示匹配结果',
+    icon: '🔍',
+    category: '开发工具',
+    href: '/tools/regex-tester',
+    color: 'bg-pink-500',
+    features: ['实时测试', '匹配高亮', '常用模式']
+  },
+  {
+    id: 'url-encoder',
+    title: 'URL 编码器',
+    description: 'URL 编码、解码、Base64 编码等常用转换',
+    icon: '🔗',
+    category: '开发工具',
+    href: '/tools/url-encoder',
+    color: 'bg-teal-500',
+    features: ['多格式支持', '批量转换', '实时预览']
+  },
+  {
+    id: 'password-generator',
+    title: '密码生成器',
+    description: '生成安全的随机密码，可自定义长度和字符',
+    icon: '🔐',
+    category: '安全工具',
+    href: '/tools/password-generator',
+    color: 'bg-red-500',
+    features: ['安全算法', '自定义选项', '强度评估']
+  },
+  {
+    id: 'timestamp-converter',
+    title: '时间戳转换',
+    description: 'Unix 时间戳与日期时间相互转换',
+    icon: '⏰',
+    category: '实用工具',
+    href: '/tools/timestamp-converter',
+    color: 'bg-yellow-500',
+    features: ['批量转换', '多格式支持', '实时更新']
+  },
+  {
+    id: 'character-counter',
+    title: '字符计数器',
+    description: '统计字符数、单词数、段落数和阅读时间',
+    icon: '📈',
+    category: '文本工具',
+    href: '/tools/character-counter',
+    color: 'bg-emerald-500',
+    features: ['详细统计', '时间估算', '多语言支持']
+  },
+  {
+    id: 'base64-converter',
+    title: 'Base64 编码',
+    description: 'Base64 编码/解码，支持文本和文件',
+    icon: '🔤',
+    category: '开发工具',
+    href: '/tools/base64-converter',
+    color: 'bg-violet-500',
+    features: ['文件支持', '批量处理', '实时编码']
+  },
+  {
+    id: 'qr-generator',
+    title: '二维码生成',
+    description: '生成各种类型的二维码，支持 WiFi、联系人',
+    icon: '📱',
+    category: '实用工具',
+    href: '/tools/qr-generator',
+    color: 'bg-rose-500',
+    features: ['多种类型', '自定义样式', '高质量导出']
+  },
+  {
+    id: 'color-picker',
+    title: '颜色选择器',
+    description: '取色器、调色板生成、颜色格式转换',
+    icon: '🎨',
+    category: '设计工具',
+    href: '/tools/color-picker',
+    color: 'bg-sky-500',
+    features: ['色彩和谐', '格式转换', '调色板管理']
+  },
+  {
+    id: 'image-compressor',
+    title: '图片压缩',
+    description: '在线压缩图片，支持 JPG/PNG/WebP',
+    icon: '🖼️',
+    category: '设计工具',
+    href: '/tools/image-compressor',
+    color: 'bg-amber-500',
+    features: ['批量处理', '质量控制', '多格式支持']
   }
 ];
 
