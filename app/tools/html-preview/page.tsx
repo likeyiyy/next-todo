@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useEffect, useRef } from 'react';
+import UnifiedHeader from '../../components/UnifiedHeader';
 
 export default function HtmlPreviewPage() {
   const [htmlCode, setHtmlCode] = useState(`<!DOCTYPE html>
@@ -101,17 +102,11 @@ export default function HtmlPreviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            HTML 预览工具
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            实时编辑和预览 HTML 代码，支持导入和导出
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <UnifiedHeader />
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
         {/* Controls */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-4">
@@ -232,7 +227,7 @@ export default function HtmlPreviewPage() {
             <li>• 使用分屏视图可以同时查看代码和预览效果</li>
           </ul>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
