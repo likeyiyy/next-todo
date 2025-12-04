@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import UnifiedHeader from '../../components/UnifiedHeader';
 
 interface TestResult {
@@ -27,6 +27,7 @@ export default function RegexTesterPage() {
   const [results, setResults] = useState<TestResult[]>([]);
   const [error, setError] = useState('');
   const [highlightedText, setHighlightedText] = useState('');
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const commonPatterns = [
     { name: '邮箱地址', pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}' },
@@ -90,18 +91,26 @@ export default function RegexTesterPage() {
     }
   };
 
+  const debounceRegex = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      testRegex();
+    }, 300);
+  };
+
   const handlePatternChange = (value: string) => {
     setPattern(value);
     if (value && testText) {
-      // 延迟测试，避免频繁计算
-      setTimeout(testRegex, 300);
+      debounceRegex();
     }
   };
 
   const handleTextChange = (value: string) => {
     setTestText(value);
     if (pattern) {
-      setTimeout(testRegex, 300);
+      debounceRegex();
     }
   };
 
@@ -111,13 +120,16 @@ export default function RegexTesterPage() {
       return newFlags;
     });
     if (pattern) {
-      setTimeout(testRegex, 100);
+      debounceRegex();
     }
   };
 
   const applyCommonPattern = (commonPattern: typeof commonPatterns[0]) => {
     setPattern(commonPattern.pattern);
-    setTimeout(testRegex, 100);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(testRegex, 100);
   };
 
   const exportResults = () => {
@@ -139,6 +151,15 @@ export default function RegexTesterPage() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
+
+  // 清理定时器
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -112,17 +112,7 @@ const tools = [
     color: 'bg-emerald-500',
     features: ['详细统计', '时间估算', '多语言支持']
   },
-  {
-    id: 'base64-converter',
-    title: 'Base64 编码',
-    description: 'Base64 编码/解码，支持文本和文件',
-    icon: '🔤',
-    category: '开发工具',
-    href: '/tools/base64-converter',
-    color: 'bg-violet-500',
-    features: ['文件支持', '批量处理', '实时编码']
-  },
-  {
+    {
     id: 'qr-generator',
     title: '二维码生成',
     description: '生成各种类型的二维码，支持 WiFi、联系人',
@@ -171,7 +161,7 @@ export default function HomePage() {
             >
               {/* Tool Icon */}
               <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-700 group-hover:scale-110 transition-transform duration-200 mb-4">
-                <span className="text-3xl">{tool.icon}</span>
+                <span className="text-3xl leading-none">{tool.icon}</span>
               </div>
 
               {/* Tool Title */}
