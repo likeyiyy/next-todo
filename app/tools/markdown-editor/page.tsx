@@ -244,13 +244,24 @@ function hello(name) {
 
     // 首先处理代码块，避免里面的内容被解析
     const codeBlocks: { lang: string; code: string }[] = [];
-    html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+
+    // 调试代码块匹配
+    console.log('原始 markdown:', html);
+
+    html = html.replace(/```(\w*)\n?([\s\S]*?)\n?```/g, (match, lang, code) => {
+      console.log('匹配到代码块:', { match, lang, code: code.trim() });
       const index = codeBlocks.length;
       codeBlocks.push({ lang, code: code.trim() });
-      return `__CODE_BLOCK_${index}__`;
+      const placeholder = `__CODE_BLOCK_${index}__`;
+      console.log('替换为占位符:', placeholder);
+      return placeholder;
     });
 
+    console.log('处理代码块后的文本:', html);
+    console.log('codeBlocks数组:', codeBlocks);
+
     // 处理表格
+    console.log('处理表格前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/\|(.+)\|\n\|[-\s|]+\|\n((?:\|.+\|\n?)*)/g, (match, header, body) => {
       const headerCells = header.split('|').map(cell => cell.trim()).filter(cell => cell);
       const bodyRows = body.trim().split('\n').filter(row => row.trim());
@@ -263,52 +274,119 @@ function hello(name) {
 
       return `<table class="markdown-table"><thead><tr>${headerHtml}</tr></thead><tbody>${bodyHtml}</tbody></table>`;
     });
+    console.log('处理表格后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理标题
+    console.log('处理标题前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/^###### (.+)$/gm, '<h6>$1</h6>');
     html = html.replace(/^##### (.+)$/gm, '<h5>$1</h5>');
     html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
     html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
     html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
     html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+    console.log('处理标题后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理引用块
+    console.log('处理引用块前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
     html = html.replace(/^> > (.+)$/gm, '<blockquote><blockquote>$1</blockquote></blockquote>');
+    console.log('处理引用块后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理有序列表
+    console.log('处理有序列表前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
     html = html.replace(/(<li>.*<\/li>\s*)+/gs, '<ol>$&</ol>');
+    console.log('处理有序列表后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理无序列表
+    console.log('处理无序列表前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/^[\*\-] (.+)$/gm, '<li>$1</li>');
     html = html.replace(/(<li>.*<\/li>\s*)+/gs, (match) => {
       return match.includes('<ol>') ? match : `<ul>${match}</ul>`;
     });
+    console.log('处理无序列表后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理水平线
+    console.log('处理水平线前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/^---+$/gm, '<hr>');
     html = html.replace(/^\*\*\*+$/gm, '<hr>');
+    console.log('处理水平线后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理粗体
+    console.log('处理粗体前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+    console.log('处理粗体后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理斜体
+    console.log('处理斜体前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
     html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+    console.log('处理斜体后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理删除线
+    console.log('处理删除线前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
+    console.log('处理删除线后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理行内代码
+    console.log('处理行内代码前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
+    console.log('处理行内代码前，当前HTML片段:', html.substring(0, 200) + '...');
+    // 先检查是否有任何包含我们的占位符的行内代码
+    const beforeInlineCode = html;
     html = html.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+    if (beforeInlineCode.includes('__CODE_BLOCK_') && !html.includes('__CODE_BLOCK_')) {
+      console.error('行内代码处理导致占位符丢失！');
+      console.error('处理前:', beforeInlineCode.substring(0, 300));
+      console.error('处理后:', html.substring(0, 300));
+    }
+    console.log('处理行内代码后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
+    console.log('处理行内代码后，当前HTML片段:', html.substring(0, 200) + '...');
+
+    // 在行内代码处理之后，链接处理之前，检查是否有其他处理步骤
+    console.log('检查：行内代码处理后立即检查占位符:', html.includes('__CODE_BLOCK_'));
+
+    // 检查是否有任何可能影响占位符的中间步骤
+    if (html.includes('__CODE_BLOCK_')) {
+      const placeholderMatches = html.match(/__CODE_BLOCK_\d+__/g);
+      console.log('当前存在的占位符:', placeholderMatches);
+    }
 
     // 处理链接
+    console.log('处理链接前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    console.log('处理链接后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理图片
+    console.log('处理图片前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
+    console.log('处理图片前，当前HTML片段:', html.substring(0, 200) + '...');
     html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;" />');
+    console.log('处理图片后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
+    console.log('处理图片后，当前HTML片段:', html.substring(0, 200) + '...');
+
+    // 在段落处理之前，先恢复代码块
+    console.log('段落处理前恢复代码块，当前HTML包含占位符:', html.includes('__CODE_BLOCK_'));
+    console.log('待恢复的代码块数量:', codeBlocks.length);
+
+    codeBlocks.forEach((block, index) => {
+      const placeholder = `__CODE_BLOCK_${index}__`;
+      const lang = block.lang ? ` class="language-${block.lang}"` : '';
+      const codeHtml = `<pre class="code-block"><code${lang}>${escapeHtml(block.code)}</code></pre>`;
+
+      console.log(`段落前恢复代码块 ${index}:`, {
+        placeholder,
+        exists: html.includes(placeholder),
+        lang: block.lang,
+        codeLength: block.code.length
+      });
+
+      if (html.includes(placeholder)) {
+        html = html.replace(placeholder, codeHtml);
+        console.log(`段落前成功替换占位符 ${index}`);
+      } else {
+        console.warn(`段落前找不到占位符 ${index}: ${placeholder}`);
+      }
+    });
 
     // 处理段落
     html = html.replace(/\n\n/g, '</p><p>');
@@ -336,12 +414,7 @@ function hello(name) {
     html = html.replace(/<p>(<img)/g, '$1');
     html = html.replace(/(\/>)<\/p>/g, '$1');
 
-    // 恢复代码块
-    codeBlocks.forEach((block, index) => {
-      const lang = block.lang ? ` class="language-${block.lang}"` : '';
-      const codeHtml = `<pre class="code-block"><code${lang}>${escapeHtml(block.code)}</code></pre>`;
-      html = html.replace(`__CODE_BLOCK_${index}__`, codeHtml);
-    });
+    console.log('所有处理完成，最终HTML是否包含代码块:', html.includes('<pre class="code-block">'));
 
     return html;
   };
