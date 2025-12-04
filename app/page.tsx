@@ -141,6 +141,46 @@ const tools = [
     href: '/tools/image-compressor',
     color: 'bg-amber-500',
     features: ['批量处理', '质量控制', '多格式支持']
+  },
+  {
+    id: 'cron-generator',
+    title: 'Cron 表达式生成器',
+    description: '可视化生成和测试 Cron 表达式',
+    icon: '⏱️',
+    category: '开发工具',
+    href: '/tools/cron-generator',
+    color: 'bg-violet-500',
+    features: ['可视化编辑', '预设模板', '运行时间预览']
+  },
+  {
+    id: 'jwt-parser',
+    title: 'JWT 解析器',
+    description: '解码和验证 JSON Web Token',
+    icon: '🔑',
+    category: '开发工具',
+    href: '/tools/jwt-parser',
+    color: 'bg-fuchsia-500',
+    features: ['Header/Payload解析', '安全提示', '示例Token']
+  },
+  {
+    id: 'user-agent-parser',
+    title: 'User-Agent 解析器',
+    description: '解析浏览器信息，识别设备和系统',
+    icon: '🌐',
+    category: '开发工具',
+    href: '/tools/user-agent-parser',
+    color: 'bg-lime-500',
+    features: ['自动检测', '详细信息', '示例数据']
+  },
+  {
+    id: 'ip-lookup',
+    title: 'IP 地址查询',
+    description: '查询 IP 地址的地理位置和 ISP 信息',
+    icon: '📍',
+    category: '网络工具',
+    href: '/tools/ip-lookup',
+    color: 'bg-slate-500',
+    features: ['地理位置', 'ISP信息', '地图定位']
   }
 ];
 
