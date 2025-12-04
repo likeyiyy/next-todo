@@ -238,134 +238,125 @@ function hello(name) {
     };
   }, []);
 
-  // 改进的 Markdown 解析器
+  // 完整的 Markdown 解析器
   const parseMarkdown = (text: string): string => {
     let html = text;
-    const lines = html.split('\n');
-    let result = [];
-    let inCodeBlock = false;
-    let inTable = false;
-    let listItems = [];
 
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+    // 首先处理代码块，避免里面的内容被解析
+    const codeBlocks: string[] = [];
+    html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+      const index = codeBlocks.length;
+      codeBlocks.push({ lang, code: code.trim() });
+      return `__CODE_BLOCK_${index}__`;
+    });
 
-      // 代码块处理
-      if (line.startsWith('```')) {
-        if (inCodeBlock) {
-          result.push('</code></pre>');
-          inCodeBlock = false;
-        } else {
-          const lang = line.substring(3).trim();
-          result.push('<pre class="code-block"><code class="language-' + lang + '">');
-          inCodeBlock = true;
-        }
-        continue;
-      }
+    // 处理表格
+    html = html.replace(/\|(.+)\|\n\|[-\s|]+\|\n((?:\|.+\|\n?)*)/g, (match, header, body) => {
+      const headerCells = header.split('|').map(cell => cell.trim()).filter(cell => cell);
+      const bodyRows = body.trim().split('\n').filter(row => row.trim());
 
-      if (inCodeBlock) {
-        result.push(line);
-        continue;
-      }
+      const headerHtml = headerCells.map(cell => `<th>${cell}</th>`).join('');
+      const bodyHtml = bodyRows.map(row => {
+        const cells = row.split('|').map(cell => cell.trim()).filter(cell => cell);
+        return `<tr>${cells.map(cell => `<td>${cell}</td>`).join('')}</tr>`;
+      }).join('');
 
-      // 表格处理
-      if (line.includes('|')) {
-        if (!inTable) {
-          result.push('<table class="markdown-table"><thead>');
-          inTable = true;
-        }
+      return `<table class="markdown-table"><thead><tr>${headerHtml}</tr></thead><tbody>${bodyHtml}</tbody></table>`;
+    });
 
-        const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell);
+    // 处理标题
+    html = html.replace(/^###### (.+)$/gm, '<h6>$1</h6>');
+    html = html.replace(/^##### (.+)$/gm, '<h5>$1</h5>');
+    html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
 
-        if (cells.some(cell => cell.includes('---'))) {
-          // 表格头部结束
-          result.push('</thead><tbody>');
-          continue;
-        }
+    // 处理引用块
+    html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+    html = html.replace(/^> > (.+)$/gm, '<blockquote><blockquote>$1</blockquote></blockquote>');
 
-        const cellTags = cells.map(cell => `<td>${cell}</td>`).join('');
-        result.push(`<tr>${cellTags}</tr>`);
-        continue;
-      } else if (inTable) {
-        result.push('</tbody></table>');
-        inTable = false;
-      }
+    // 处理有序列表
+    html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>\s*)+/gs, '<ol>$&</ol>');
 
-      // 标题
-      if (line.startsWith('### ')) {
-        result.push('<h3>' + line.substring(4) + '</h3>');
-        continue;
-      }
-      if (line.startsWith('## ')) {
-        result.push('<h2>' + line.substring(3) + '</h2>');
-        continue;
-      }
-      if (line.startsWith('# ')) {
-        result.push('<h1>' + line.substring(2) + '</h1>');
-        continue;
-      }
+    // 处理无序列表
+    html = html.replace(/^[\*\-] (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>\s*)+/gs, (match) => {
+      return match.includes('<ol>') ? match : `<ul>${match}</ul>`;
+    });
 
-      // 列表处理
-      if (line.startsWith('* ') || line.startsWith('- ')) {
-        listItems.push('<li>' + line.substring(2) + '</li>');
-        continue;
-      }
+    // 处理水平线
+    html = html.replace(/^---+$/gm, '<hr>');
+    html = html.replace(/^\*\*\*+$/gm, '<hr>');
 
-      if (line.match(/^\d+\. /)) {
-        listItems.push('<li>' + line.replace(/^\d+\. /, '') + '</li>');
-        continue;
-      }
+    // 处理粗体
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
 
-      // 如果有列表项，先输出列表
-      if (listItems.length > 0) {
-        result.push('<ul>' + listItems.join('') + '</ul>');
-        listItems = [];
-      }
+    // 处理斜体
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    html = html.replace(/_(.+?)_/g, '<em>$1</em>');
 
-      // 引用
-      if (line.startsWith('> ')) {
-        result.push('<blockquote>' + line.substring(2) + '</blockquote>');
-        continue;
-      }
+    // 处理删除线
+    html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
 
-      // 水平线
-      if (line === '---') {
-        result.push('<hr>');
-        continue;
-      }
+    // 处理行内代码
+    html = html.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
 
-      // 空行
-      if (line.trim() === '') {
-        result.push('<br>');
-        continue;
-      }
+    // 处理链接
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
 
-      // 普通段落处理
-      let processedLine = line;
+    // 处理图片
+    html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;" />');
 
-      // 粗体和斜体
-      processedLine = processedLine.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      processedLine = processedLine.replace(/\*(.*?)\*/g, '<em>$1</em>');
-      processedLine = processedLine.replace(/~~(.*?)~~/g, '<del>$1</del>');
+    // 处理段落
+    html = html.replace(/\n\n/g, '</p><p>');
+    html = html.replace(/^([^<\s][^<]*)$/gm, '<p>$1</p>');
+    html = html.replace(/^(<h[1-6]>.*<\/h[1-6]>)$/gm, '$1');
+    html = html.replace(/^(<blockquote>.*<\/blockquote>)$/gm, '$1');
+    html = html.replace(/^(<ul>.*<\/ul>)$/gm, '$1');
+    html = html.replace(/^(<ol>.*<\/ol>)$/gm, '$1');
+    html = html.replace(/^(<table>.*<\/table>)$/gm, '$1');
+    html = html.replace(/^(<hr>)$/gm, '$1');
 
-      // 行内代码
-      processedLine = processedLine.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+    // 清理多余的段落标签
+    html = html.replace(/<p><\/p>/g, '');
+    html = html.replace(/<p>(<h[1-6]>)/g, '$1');
+    html = html.replace(/(<\/h[1-6]>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<blockquote>)/g, '$1');
+    html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<ul>)/g, '$1');
+    html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<ol>)/g, '$1');
+    html = html.replace(/(<\/ol>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<table>)/g, '$1');
+    html = html.replace(/(<\/table>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<hr>)<\/p>/g, '$1');
+    html = html.replace(/<p>(<img)/g, '$1');
+    html = html.replace(/(\/>)<\/p>/g, '$1');
 
-    // 链接
-      processedLine = processedLine.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    // 恢复代码块
+    codeBlocks.forEach((block, index) => {
+      const lang = block.lang ? ` class="language-${block.lang}"` : '';
+      const codeHtml = `<pre class="code-block"><code${lang}>${escapeHtml(block.code)}</code></pre>`;
+      html = html.replace(`__CODE_BLOCK_${index}__`, codeHtml);
+    });
 
-    if (processedLine.trim()) {
-      result.push('<p>' + processedLine + '</p>');
-    }
-  }
+    return html;
+  };
 
-  // 输出剩余的列表
-  if (listItems.length > 0) {
-    result.push('<ul>' + listItems.join('') + '</ul>');
-  }
-
-  return result.join('');
-};
+  // HTML 转义函数
+  const escapeHtml = (text: string): string => {
+    const map: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return text.replace(/[&<>"']/g, (m) => map[m]);
+  };
 
   const handleExport = (format: 'markdown' | 'html') => {
     if (format === 'markdown') {
