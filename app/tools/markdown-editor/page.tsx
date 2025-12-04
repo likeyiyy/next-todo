@@ -243,7 +243,7 @@ function hello(name) {
     let html = text;
 
     // 首先处理代码块，避免里面的内容被解析
-    const codeBlocks: string[] = [];
+    const codeBlocks: { lang: string; code: string }[] = [];
     html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
       const index = codeBlocks.length;
       codeBlocks.push({ lang, code: code.trim() });
