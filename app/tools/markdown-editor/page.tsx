@@ -299,15 +299,21 @@ function hello(name) {
     html = html.replace(/^\*\*\*+$/gm, '<hr>');
 
     // 处理粗体
+    console.log('粗体处理前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+    console.log('粗体处理后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理斜体
+    console.log('斜体处理前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
     html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+    console.log('斜体处理后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理删除线
+    console.log('删除线处理前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
     html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
+    console.log('删除线处理后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理行内代码 - 先恢复代码块，再处理行内代码
     console.log('行内代码处理前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
