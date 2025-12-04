@@ -246,11 +246,17 @@ function hello(name) {
     const codeBlocks: { lang: string; code: string }[] = [];
 
     // 使用更精确的代码块匹配正则
+    console.log('开始匹配代码块...');
     html = html.replace(/```(\w*)\s*\n([\s\S]*?)\n```/g, (match, lang, code) => {
+      console.log('匹配到代码块:', { lang, code: code.trim().substring(0, 50) + '...' });
       const index = codeBlocks.length;
       codeBlocks.push({ lang, code: code.trim() });
-      return `__CODE_BLOCK_${index}__`;
+      const placeholder = `__CODE_BLOCK_${index}__`;
+      console.log('创建占位符:', placeholder);
+      return placeholder;
     });
+    console.log('代码块匹配完成，HTML现在包含占位符:', html.includes('__CODE_BLOCK_'));
+    console.log('匹配后的HTML片段:', html.substring(0, 300));
 
     // 处理表格
     html = html.replace(/\|(.+)\|\n\|[-\s|]+\|\n((?:\|.+\|\n?)*)/g, (match, header, body) => {
@@ -325,12 +331,26 @@ function hello(name) {
     html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;" />');
 
     // 在段落处理之前，恢复代码块
+    console.log('开始恢复代码块，当前HTML:', html.substring(0, 300));
+    console.log('代码块数量:', codeBlocks.length);
+
     codeBlocks.forEach((block, index) => {
       const placeholder = `__CODE_BLOCK_${index}__`;
       const lang = block.lang ? ` class="language-${block.lang}"` : '';
       const codeHtml = `<pre class="code-block"><code${lang}>${escapeHtml(block.code)}</code></pre>`;
-      html = html.replace(placeholder, codeHtml);
+
+      console.log(`尝试替换占位符 ${index}:`, placeholder, '->', codeHtml.substring(0, 50) + '...');
+      console.log(`占位符 ${index} 存在:`, html.includes(placeholder));
+
+      if (html.includes(placeholder)) {
+        html = html.replace(placeholder, codeHtml);
+        console.log(`成功替换占位符 ${index}`);
+      } else {
+        console.error(`找不到占位符 ${index}: ${placeholder}`);
+      }
     });
+
+    console.log('代码块恢复完成，最终HTML包含代码块:', html.includes('<pre class="code-block">'));
 
     // 处理段落
     html = html.replace(/\n\n/g, '</p><p>');
