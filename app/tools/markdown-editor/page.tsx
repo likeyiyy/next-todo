@@ -310,19 +310,34 @@ function hello(name) {
     html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
 
     // 处理行内代码 - 先恢复代码块，再处理行内代码
+    console.log('行内代码处理前，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
+
     codeBlocks.forEach((block, index) => {
       const placeholder = `__CODE_BLOCK_${index}__`;
       const tempPlaceholder = `__TEMP_CODE_BLOCK_${index}__`;
+      console.log(`替换占位符 ${placeholder} -> ${tempPlaceholder}`);
+      const beforeCount = (html.match(new RegExp(placeholder, 'g')) || []).length;
       html = html.replace(placeholder, tempPlaceholder);
+      const afterCount = (html.match(new RegExp(tempPlaceholder, 'g')) || []).length;
+      console.log(`替换 ${placeholder}: ${beforeCount} 次 -> ${tempPlaceholder}: ${afterCount} 次`);
     });
+
+    console.log('临时占位符替换后，HTML包含临时占位符:', html.includes('__TEMP_CODE_BLOCK_'));
+    console.log('行内代码处理前，HTML片段:', html.substring(0, 300));
 
     html = html.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
 
     // 恢复临时占位符
     codeBlocks.forEach((block, index) => {
       const tempPlaceholder = `__TEMP_CODE_BLOCK_${index}__`;
+      console.log(`恢复占位符 ${tempPlaceholder} -> __CODE_BLOCK_${index}__`);
+      const beforeCount = (html.match(new RegExp(tempPlaceholder, 'g')) || []).length;
       html = html.replace(tempPlaceholder, `__CODE_BLOCK_${index}__`);
+      const afterCount = (html.match(new RegExp(`__CODE_BLOCK_${index}__`, 'g')) || []).length;
+      console.log(`恢复 ${tempPlaceholder}: ${beforeCount} 次 -> __CODE_BLOCK_${index}__: ${afterCount} 次`);
     });
+
+    console.log('行内代码处理后，HTML包含占位符:', html.includes('__CODE_BLOCK_'));
 
     // 处理链接
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
