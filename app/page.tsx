@@ -41,6 +41,16 @@ const tools = [
     href: '/tools/global-clock',
     color: 'bg-indigo-500',
     features: ['实时更新', '多时区', '地区分组']
+  },
+  {
+    id: 'html-preview',
+    title: 'HTML 预览',
+    description: '实时编辑和预览 HTML 代码，支持导入导出',
+    icon: '🌐',
+    category: '开发工具',
+    href: '/tools/html-preview',
+    color: 'bg-orange-500',
+    features: ['实时预览', '代码编辑', '导入导出']
   }
 ];
 
