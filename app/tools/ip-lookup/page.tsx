@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import UnifiedHeader from '../../components/UnifiedHeader'
 
 interface IPInfo {
   ip: string
@@ -104,12 +105,10 @@ export default function IPLookup() {
 
   return (
     <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">IP 地址查询</h1>
-        <p className="text-muted-foreground">
-          查询 IP 地址的地理位置、ISP 等信息
-        </p>
-      </div>
+      <UnifiedHeader
+        title="IP 地址查询"
+        description="查询 IP 地址的地理位置、ISP 等信息"
+      />
 
       <div className="space-y-6">
         {/* 当前 IP */}

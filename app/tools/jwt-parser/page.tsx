@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import UnifiedHeader from '../../components/UnifiedHeader'
 
 export default function JWTParser() {
   const [jwtInput, setJwtInput] = useState('')
@@ -72,12 +73,10 @@ export default function JWTParser() {
 
   return (
     <div className="container mx-auto py-8 px-4 max-w-6xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">JWT 解析器</h1>
-        <p className="text-muted-foreground">
-          解码和验证 JSON Web Token (JWT) 的内容
-        </p>
-      </div>
+      <UnifiedHeader
+        title="JWT 解析器"
+        description="解码和验证 JSON Web Token (JWT) 的内容"
+      />
 
       <div className="space-y-6">
         {/* JWT 输入 */}

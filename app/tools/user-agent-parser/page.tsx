@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import UnifiedHeader from '../../components/UnifiedHeader'
 
 interface ParsedUA {
   browser: {
@@ -166,12 +167,10 @@ export default function UserAgentParser() {
 
   return (
     <div className="container mx-auto py-8 px-4 max-w-6xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">User-Agent 解析器</h1>
-        <p className="text-muted-foreground">
-          解析浏览器 User-Agent 字符串，提取浏览器、操作系统、设备等信息
-        </p>
-      </div>
+      <UnifiedHeader
+        title="User-Agent 解析器"
+        description="解析浏览器 User-Agent 字符串，提取浏览器、操作系统、设备等信息"
+      />
 
       <div className="space-y-6">
         {/* 当前浏览器 User-Agent */}

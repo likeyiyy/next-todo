@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import UnifiedHeader from '../../components/UnifiedHeader'
 
 export default function CronGenerator() {
   const [cronExpression, setCronExpression] = useState('* * * * *')
@@ -62,12 +63,10 @@ export default function CronGenerator() {
 
   return (
     <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Cron 表达式生成器</h1>
-        <p className="text-muted-foreground">
-          可视化生成和测试 Cron 表达式
-        </p>
-      </div>
+      <UnifiedHeader
+        title="Cron 表达式生成器"
+        description="可视化生成和测试 Cron 表达式"
+      />
 
       <div className="space-y-6">
         {/* 当前表达式 */}
