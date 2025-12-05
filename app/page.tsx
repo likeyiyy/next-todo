@@ -261,6 +261,26 @@ const tools = [
     href: '/tools/bmi-calculator',
     color: 'bg-pink-600',
     features: ['BMI计算', '健康评估', '理想体重']
+  },
+  {
+    id: 'api-tester',
+    title: 'API 测试工具',
+    description: '发送 HTTP 请求测试 API 接口',
+    icon: '🚀',
+    category: '开发工具',
+    href: '/tools/api-tester',
+    color: 'bg-indigo-600',
+    features: ['多种请求方法', '请求历史', '响应分析']
+  },
+  {
+    id: 'curl-generator',
+    title: 'CURL 命令生成器',
+    description: '可视化生成 CURL 命令行工具',
+    icon: '💻',
+    category: '开发工具',
+    href: '/tools/curl-generator',
+    color: 'bg-gray-600',
+    features: ['可视化配置', '认证支持', '参数参考']
   }
 ];
 
