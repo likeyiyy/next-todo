@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from 'react'
+import UnifiedHeader from '../../components/UnifiedHeader'
 
 interface LoanDetails {
   monthlyPayment: number
@@ -143,8 +144,9 @@ export default function LoanCalculator() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <UnifiedHeader />
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
           <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
             贷款计算器
@@ -402,8 +404,8 @@ export default function LoanCalculator() {
               </div>
             </div>
           </div>
-        </div>
       </div>
+      </main>
     </div>
   )
 }
