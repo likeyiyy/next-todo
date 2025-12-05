@@ -181,6 +181,86 @@ const tools = [
     href: '/tools/ip-lookup',
     color: 'bg-slate-500',
     features: ['地理位置', 'ISP信息', '地图定位']
+  },
+  {
+    id: 'sql-formatter',
+    title: 'SQL 格式化器',
+    description: '格式化和美化 SQL 代码，支持自定义缩进',
+    icon: '🗃️',
+    category: '开发工具',
+    href: '/tools/sql-formatter',
+    color: 'bg-blue-600',
+    features: ['语法高亮', '自动格式化', '自定义选项']
+  },
+  {
+    id: 'aes-encryptor',
+    title: 'AES 加解密',
+    description: '使用 AES 算法加密和解密文本数据',
+    icon: '🔒',
+    category: '安全工具',
+    href: '/tools/aes-encryptor',
+    color: 'bg-rose-600',
+    features: ['AES-256', '密钥生成', '双向转换']
+  },
+  {
+    id: 'excel-csv-converter',
+    title: 'Excel/CSV 转换',
+    description: '在线转换 Excel 和 CSV 文件格式',
+    icon: '📊',
+    category: '实用工具',
+    href: '/tools/excel-csv-converter',
+    color: 'bg-green-600',
+    features: ['格式转换', '批量处理', '数据预览']
+  },
+  {
+    id: 'xml-formatter',
+    title: 'XML 格式化器',
+    description: '格式化、美化和压缩 XML 代码',
+    icon: '📄',
+    category: '开发工具',
+    href: '/tools/xml-formatter',
+    color: 'bg-orange-600',
+    features: ['格式美化', '代码压缩', '行号显示']
+  },
+  {
+    id: 'yaml-validator',
+    title: 'YAML 验证器',
+    description: '验证和转换 YAML 格式到 JSON',
+    icon: '✅',
+    category: '开发工具',
+    href: '/tools/yaml-validator',
+    color: 'bg-purple-600',
+    features: ['语法验证', '格式转换', '错误提示']
+  },
+  {
+    id: 'loan-calculator',
+    title: '贷款计算器',
+    description: '计算房贷、车贷等贷款月供和利息',
+    icon: '💰',
+    category: '实用工具',
+    href: '/tools/loan-calculator',
+    color: 'bg-yellow-600',
+    features: ['多种贷款', '还款计划', '利息计算']
+  },
+  {
+    id: 'tax-calculator',
+    title: '税率计算器',
+    description: '计算个人所得税和增值税',
+    icon: '🧾',
+    category: '实用工具',
+    href: '/tools/tax-calculator',
+    color: 'bg-indigo-600',
+    features: ['个税计算', '增值税计算', '税率查询']
+  },
+  {
+    id: 'bmi-calculator',
+    title: 'BMI 计算器',
+    description: '计算身体质量指数，评估健康状态',
+    icon: '⚖️',
+    category: '健康工具',
+    href: '/tools/bmi-calculator',
+    color: 'bg-pink-600',
+    features: ['BMI计算', '健康评估', '理想体重']
   }
 ];
 
