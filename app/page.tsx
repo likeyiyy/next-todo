@@ -347,6 +347,27 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
+
+        {/* Elasticsearch 速查手册 */}
+        <div className="mt-8 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg p-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              🔍 Elasticsearch 查询速查手册
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
+              Elasticsearch 常用查询语法和 API 快速参考，包含基础查询、聚合分析、全文搜索等实用示例
+            </p>
+            <Link
+              href="/elasticsearch-cheatsheet"
+              className="inline-flex items-center px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors"
+            >
+              查看 ES 速查手册
+              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
+        </div>
       </main>
 
       {/* Footer */}
