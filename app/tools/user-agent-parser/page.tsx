@@ -138,33 +138,6 @@ export default function UserAgentParser() {
     parseUserAgent(value)
   }
 
-  const exampleUAs = [
-    {
-      name: 'Chrome on Windows',
-      ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-    },
-    {
-      name: 'Safari on macOS',
-      ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15'
-    },
-    {
-      name: 'Firefox on Linux',
-      ua: 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/121.0'
-    },
-    {
-      name: 'Chrome on Android',
-      ua: 'Mozilla/5.0 (Linux; Android 13; SM-G998B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36'
-    },
-    {
-      name: 'Safari on iPhone',
-      ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1'
-    },
-    {
-      name: 'Edge on Windows',
-      ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'
-    }
-  ]
-
   return (
     <div className="container mx-auto py-8 px-4 max-w-6xl">
       <UnifiedHeader
@@ -201,30 +174,6 @@ export default function UserAgentParser() {
               placeholder="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36..."
               className="w-full h-32 px-3 py-2 border rounded-md font-mono text-sm"
             />
-          </CardContent>
-        </Card>
-
-        {/* 示例 User-Agents */}
-        <Card>
-          <CardHeader>
-            <CardTitle>示例 User-Agents</CardTitle>
-            <CardDescription>点击使用示例进行测试</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {exampleUAs.map((example) => (
-                <button
-                  key={example.name}
-                  onClick={() => handleInputChange(example.ua)}
-                  className="p-3 text-left bg-secondary hover:bg-secondary/80 rounded-md transition-colors"
-                >
-                  <div className="font-medium mb-1">{example.name}</div>
-                  <div className="text-xs text-muted-foreground font-mono truncate">
-                    {example.ua}
-                  </div>
-                </button>
-              ))}
-            </div>
           </CardContent>
         </Card>
 
