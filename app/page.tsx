@@ -326,6 +326,27 @@ export default function HomePage() {
             我们正在开发更多实用的在线工具，敬请期待！
           </p>
         </div>
+
+        {/* ES 速查手册 */}
+        <div className="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              📚 JavaScript/ES 速查手册
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
+              常用 JavaScript 和 ES6+ 语法快速参考，包含数组方法、对象操作、异步编程等常用代码示例
+            </p>
+            <Link
+              href="/es-cheatsheet"
+              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              查看速查手册
+              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
+        </div>
       </main>
 
       {/* Footer */}
