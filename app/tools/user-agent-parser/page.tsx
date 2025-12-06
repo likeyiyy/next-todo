@@ -139,11 +139,16 @@ export default function UserAgentParser() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-6xl">
-      <UnifiedHeader
-        title="User-Agent 解析器"
-        description="解析浏览器 User-Agent 字符串，提取浏览器、操作系统、设备等信息"
-      />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <UnifiedHeader />
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+            User-Agent 解析器
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            解析浏览器 User-Agent 字符串，提取浏览器、操作系统、设备等信息
+          </p>
 
       <div className="space-y-6">
         {/* 当前浏览器 User-Agent */}
@@ -301,6 +306,8 @@ export default function UserAgentParser() {
           </CardContent>
         </Card>
       </div>
+        </div>
+      </main>
     </div>
   )
 }

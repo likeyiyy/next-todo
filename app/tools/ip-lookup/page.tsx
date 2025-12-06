@@ -104,11 +104,16 @@ export default function IPLookup() {
   ]
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <UnifiedHeader
-        title="IP 地址查询"
-        description="查询 IP 地址的地理位置、ISP 等信息"
-      />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <UnifiedHeader />
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+            IP 地址查询
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            查询 IP 地址的地理位置、ISP 等信息
+          </p>
 
       <div className="space-y-6">
         {/* 当前 IP */}
@@ -341,6 +346,8 @@ export default function IPLookup() {
           </CardContent>
         </Card>
       </div>
+        </div>
+      </main>
     </div>
   )
 }

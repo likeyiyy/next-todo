@@ -72,11 +72,16 @@ export default function JWTParser() {
   ]
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-6xl">
-      <UnifiedHeader
-        title="JWT 解析器"
-        description="解码和验证 JSON Web Token (JWT) 的内容"
-      />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <UnifiedHeader />
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+            JWT 解析器
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            解码和验证 JSON Web Token (JWT) 的内容
+          </p>
 
       <div className="space-y-6">
         {/* JWT 输入 */}
@@ -202,6 +207,8 @@ export default function JWTParser() {
           </CardContent>
         </Card>
       </div>
+        </div>
+      </main>
     </div>
   )
 }
