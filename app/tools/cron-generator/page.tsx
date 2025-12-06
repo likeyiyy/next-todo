@@ -62,20 +62,25 @@ export default function CronGenerator() {
   ]
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <UnifiedHeader
-        title="Cron 表达式生成器"
-        description="可视化生成和测试 Cron 表达式"
-      />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <UnifiedHeader />
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+            Cron 表达式生成器
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            可视化生成和测试 Cron 表达式
+          </p>
 
       <div className="space-y-6">
         {/* 当前表达式 */}
-        <Card>
+        <Card className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
           <CardHeader>
-            <CardTitle>当前 Cron 表达式</CardTitle>
+            <CardTitle className="text-gray-800 dark:text-gray-100">当前 Cron 表达式</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-mono font-bold text-center p-4 bg-muted rounded-lg">
+            <div className="text-2xl font-mono font-bold text-center p-4 bg-gray-100 dark:bg-gray-600 rounded-lg text-gray-800 dark:text-gray-100">
               {cronExpression}
             </div>
           </CardContent>
@@ -233,6 +238,8 @@ export default function CronGenerator() {
           </CardContent>
         </Card>
       </div>
+        </div>
+      </main>
     </div>
   )
 }
